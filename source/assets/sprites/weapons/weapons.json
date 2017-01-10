@@ -1,0 +1,84 @@
+{"frames": {
+
+"crowbar/crowbar_1.png":
+{
+	"frame": {"x":227,"y":1,"w":23,"h":100},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":100},
+	"sourceSize": {"w":23,"h":100}
+},
+"crowbar/crowbar_2.png":
+{
+	"frame": {"x":181,"y":1,"w":44,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":96},
+	"sourceSize": {"w":44,"h":96}
+},
+"crowbar/crowbar_3.png":
+{
+	"frame": {"x":1,"y":25,"w":62,"h":85},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":62,"h":85},
+	"sourceSize": {"w":62,"h":85}
+},
+"crowbar/crowbar_4.png":
+{
+	"frame": {"x":101,"y":1,"w":78,"h":68},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":68},
+	"sourceSize": {"w":78,"h":68}
+},
+"crowbar/crowbar_5.png":
+{
+	"frame": {"x":65,"y":71,"w":89,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":89,"h":48},
+	"sourceSize": {"w":89,"h":48}
+},
+"crowbar/crowbar_6.png":
+{
+	"frame": {"x":156,"y":103,"w":97,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":97,"h":24},
+	"sourceSize": {"w":97,"h":24}
+},
+"crowbar/crowbar_7.png":
+{
+	"frame": {"x":1,"y":1,"w":98,"h":22},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":98,"h":22},
+	"sourceSize": {"w":98,"h":22}
+},
+"guns/pistol.png":
+{
+	"frame": {"x":65,"y":25,"w":30,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":21},
+	"sourceSize": {"w":30,"h":21}
+},
+"guns/pistol.psd":
+{
+	"frame": {"x":65,"y":48,"w":30,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":30,"h":21},
+	"sourceSize": {"w":30,"h":21}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "weapons.png",
+	"format": "RGBA8888",
+	"size": {"w":254,"h":128},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:3069093401455f458bebbe8f35843318:367f20fed50aa91ca096899fe927497f:ba48453f8b2235fdb166a51105f49255$"
+}
+}

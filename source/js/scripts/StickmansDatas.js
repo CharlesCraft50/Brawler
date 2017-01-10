@@ -1,207 +1,23 @@
-MainPlayer = function (index, game) {
-  spawnPoint.forEach(function(sp){
-  player = game.add.sprite(sp.body.x+30, sp.body.y, 'stickman_1', 'walk/left_1');
-  });
-  game.physics.p2.enable(player);
-  player.name = index.toString();
-  game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON);
-  player.animations.add('left', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 10, true);
-  player.animations.add('right', Phaser.Animation.generateFrameNames('walk/right_', 1, 8), 10, true);
-  player.animations.add('sprint_left', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 20, true);
-  player.animations.add('sprint_right', Phaser.Animation.generateFrameNames('walk/right_', 1, 8), 20, true);
-
-  player.animations.add('punch_1_left_1', Phaser.Animation.generateFrameNames('punch_1/left_', 1, 1), 5, true);
-  player.animations.add('punch_1_left_2', Phaser.Animation.generateFrameNames('punch_1/left_', 2, 2), 5, true);
-  player.animations.add('punch_1_left_3', Phaser.Animation.generateFrameNames('punch_1/left_', 3, 3), 5, true);
-  player.animations.add('punch_1_left_4', Phaser.Animation.generateFrameNames('punch_1/left_', 4, 4), 5, true);
-
-  player.animations.add('punch_1_right_1', Phaser.Animation.generateFrameNames('punch_1/right_', 1, 1), 5, true);
-  player.animations.add('punch_1_right_2', Phaser.Animation.generateFrameNames('punch_1/right_', 2, 2), 5, true);
-  player.animations.add('punch_1_right_3', Phaser.Animation.generateFrameNames('punch_1/right_', 3, 3), 5, true);
-  player.animations.add('punch_1_right_4', Phaser.Animation.generateFrameNames('punch_1/right_', 4, 4), 5, true);
-
-  player.checkWorldBounds = true;
-  player.body.collideWorldBounds = true;
-
-  player.body.fixedRotation = true;
-  player.body.damping = 0.5;
-  player.body.setCollisionGroup(playerCollisionGroup);
-  player.body.collides([objectsCollisionGroup, blockCollisionGroup]);
-  this.jumping = false;
-  player.punchtwospeed = 50;
-  player.punchthreespeed = 50;
-  player.punchfourspeed = 50;
-  player.facing = 'left';
-};
-
-MainPlayer.prototype.update = function () {
-  if(game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-    player.body.moveLeft(200);
-
-    if (player.facing != 'left')
-    {
-        player.animations.play('left');
-        player.facing = 'left';
-    }
-  } else if(game.input.keyboard.isDown(Phaser.Keyboard.D)) {
-    player.body.moveRight(200);
-
-    if (player.facing != 'right')
-    {
-        player.animations.play('right');
-        player.facing = 'right';
-    }
-  } else {
-    player.body.velocity.x = 0;
-
-    if (player.facing != 'idle')
-    {
-        player.animations.stop();
-
-        if (player.facing == 'left')
-        {
-            player.frame = -14;
-            player.animations.stop(null, true);
-        }
-        else
-        {
-            player.frame = 15;
-            player.animations.stop(null, true);
-        }
-
-        player.facing = player.facing;
-    }
-  }
-
-  // If the player is touching the ground, let him have 2 jumps
-  if (checkIfCanJump(player)) {
-      this.jumps = 1;
-      this.jumping = false;
-  }
-
-  // Jump!
-  if (this.jumps > 0 && spacebarInputIsActive([5]) && game.time.now > jumpTimer) {
-      player.body.moveUp(300);
-      if(player.facing == 'left') {
-        player.animations.play('left');
-      } else {
-        player.animations.play('right');
-      }
-      this.jumping = true;
-      jumpTimer = game.time.now;
-  }
-
-  // Reduce the number of available jumps if the jump input is released
-  if (this.jumping && spacebarInputReleased()) {
-      this.jumps--;
-      this.jumping = false;
-  }
-
-  if(sprintButton.isDown) {
-    if(game.input.keyboard.isDown(Phaser.Keyboard.A) || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
-      if (player.facing == 'left')
-      {
-          player.body.moveLeft(500);
-          player.animations.play('sprint_left');
-      }
-      else
-      {
-          player.body.moveRight(500);
-          player.animations.play('sprint_right');
-      }
-    }
-
-  }
-
-  if(punchButton.isDown) {
-    if(punched == false) {
-      if(player.facing == 'left') {
-        player.body.moveRight(10);
-        if(punchedCount == 0) {
-          player.animations.play('punch_1_left_1');
-          setTimeout(function(){punchedCount = 1;}, 0);
-        } else if(punchedCount == 1) {
-          player.animations.play('punch_1_left_2');
-          setTimeout(function(){punchedCount = 2;}, player.punchtwospeed);
-        } else if(punchedCount == 2) {
-          player.animations.play('punch_1_left_3');
-          playerPunching = true;
-          setTimeout(function(){punchedCount = 3;}, player.punchthreespeed);
-        } else if(punchedCount == 3) {
-          player.animations.play('punch_1_left_4');
-          playerPunching = true;
-          setTimeout(function(){punchedCount = 4;}, player.punchfourspeed);
-        } else {
-          punchedCount = 0;
-          playerPunching = false;
-        }
-      } else {
-        player.body.moveLeft(10);
-        if(punchedCount == 0) {
-          player.animations.play('punch_1_right_1');
-          setTimeout(function(){punchedCount = 1;}, 0);
-        } else if(punchedCount == 1) {
-          player.animations.play('punch_1_right_2');
-          setTimeout(function(){punchedCount = 2;}, player.punchtwospeed);
-        } else if(punchedCount == 2) {
-          player.animations.play('punch_1_right_3');
-          playerPunching = true;
-          setTimeout(function(){punchedCount = 3;}, player.punchthreespeed);
-        } else if(punchedCount == 3) {
-          player.animations.play('punch_1_right_4');
-          playerPunching = true;
-          setTimeout(function(){punchedCount = 4;}, player.punchfourspeed);
-        } else {
-          punchedCount = 0;
-          playerPunching = false;
-        }
-      }
-      setTimeout(function() {if(player.facing == 'left') {player.animations.play('sprint_left');} else {player.animations.play('sprint_right');}}, 100);
-      setTimeout(function(){punched = true;}, 1000);
-    } else {
-        punched = false;
-    }
-  } else {
-    playerPunching = false;
-  }
-};
-
-function spacebarInputIsActive(duration) {
-var isActive = false;
-
-isActive = game.input.keyboard.downDuration(Phaser.Keyboard.SPACEBAR, duration);
-isActive |= (this.game.input.activePointer.justPressed(duration + 1000/60) &&
-    this.game.input.activePointer.x > this.game.width/4 &&
-    this.game.input.activePointer.x < this.game.width/2 + this.game.width/4);
-
-return isActive;
-}
-
-function spacebarInputReleased() {
-var released = false;
-
-released = game.input.keyboard.upDuration(Phaser.Keyboard.SPACEBAR);
-released |= this.game.input.activePointer.justReleased();
-
-return released;
-}
-
 var Enemy_1 = function (game, player, health, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'stickman_2');
   this.player = player;
   this.player = player;
   this.alive = true;
-  this.HP_enemy = health;
+  this.health = health;
   this.punchedCount = 0;
+  this.punch_damage = 0.5;
+  this.holding = 'nothing';
+  this.counter = 0;
+  this.randomNumber = 0;
+  this.anchor.setTo(0.5, 1);
+  this.timeCheck = game.time.now;
 
   this.punching = false;
   this.jumpCount = 0;
-  game.physics.p2.enable(this);
-  this.body.gravity.y = 1000;
-  this.animations.add('left', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 10, true);
-  this.animations.add('right', Phaser.Animation.generateFrameNames('walk/right_', 1, 8), 10, true);
-  this.animations.add('sprint_left', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 20, true);
-  this.animations.add('sprint_right', Phaser.Animation.generateFrameNames('walk/right_', 1, 8), 20, true);
+  game.physics.arcade.enable(this);
+  this.body.gravity.y = 2600;
+  this.animations.add('walk', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 10, true);
+  this.animations.add('sprint', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 20, true);
 
   this.animations.add('punch_1_left', Phaser.Animation.generateFrameNames('punch_1/left_', 1, 4), 20, true);
 
@@ -212,12 +28,10 @@ var Enemy_1 = function (game, player, health, x, y) {
 
   this.body.fixedRotation = true;
   this.body.damping = 0.5;
-  this.body.setCollisionGroup(enemies_1ColisionGroup);
-  this.body.collides(blockCollisionGroup);
-  this.body.collides(objectsCollisionGroup, function(){this.jump();}.bind(this));
-  this.HP_enemyBar = game.add.text(0, 0, 'HP: ' + this.HP_enemy + '%', {font: "10px Arial", fill: "#ffffff"});
-  this.addChild(this.HP_enemyBar);
-  this.HP_enemyBar.position.y = this.HP_enemyBar.position.y-80;
+  this.healthBar = game.add.text(0, 0, 'HP: ' + this.health + '%', {font: "10px Arial", fill: "#ffffff"});
+  this.healthBar.position.y = this.healthBar.position.y-80;
+  game.physics.arcade.enable(this.healthBar);
+  game.world.bringToTop(stuff_blocks);
   game.world.bringToTop(this.player);
   game.world.bringToTop(this);
   game.world.bringToTop(spawnPoint);
@@ -230,45 +44,54 @@ Enemy_1.prototype.constructor = Enemy_1;
 Enemy_1.prototype.move = function () {
   if(getPowDistance(this.body.x, this.body.y, this.player.body.x, this.player.body.y) < 10000) {
   if(this.enemyMoves != false) {
-    if(this.body.velocity.x < 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
-      this.animations.play('left');
+    if(this.body.velocity.x < 0) {
+      this.scale.x = 1;
+      this.animations.play('walk');
       this.facing = 'left';
-    } else if(this.body.velocity.x > 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
-      this.animations.play('right');
+    } else if(this.body.velocity.x > 0) {
+      this.scale.x = -1;
+      this.animations.play('walk');
       this.facing = 'right';
     }
   }
 } else if(getPowDistance(this.body.x, this.body.y, this.player.body.x, this.player.body.y) < 300000) {
   if(this.enemyMoves != false) {
-    accelerateToObject(this, this.player, 300);
-    if(this.body.velocity.x < 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
-      this.animations.play('left');
+    moveToObjectAdvance(this, this.player, 300, 0, true, false);
+    if(this.body.velocity.x < 0) {
+      this.scale.x = 1;
+      this.animations.play('walk');
       this.facing = 'left';
     } else if(this.body.velocity.x > 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
-      this.animations.play('right');
+      this.scale.x = -1;
+      this.animations.play('walk');
       this.facing = 'right';
     }
   }
 } else {
-    accelerateToObject(this, this.player, 500);
-    if(this.body.velocity.x < 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
-      this.animations.play('sprint_left');
+    moveToObjectAdvance(this, this.player, 500, 0, true, false);
+    if(this.body.velocity.x < 0) {
+      this.animations.play('sprint');
       this.facing = 'left';
     } else if(this.body.velocity.x > 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
-      this.animations.play('sprint_right');
+      this.animations.play('sprint');
       this.facing = 'right';
     }
   }
 };
 
-Enemy_1.prototype.damage = function() {
-    this.HP_enemy -= 1;
+Enemy_1.prototype.damage = function(edit, num) {
+  if(edit == true) {
+    this.health -= num;
+  } else {
+    this.health -= this.player.punch_damage;
+  }
 
-    if (this.HP_enemy <= 0)
+    if (this.health <= 0)
     {
         this.alive = false;
         this.destroy();
-        this.kill();
+        this.healthBar.destroy();
+        this.holding = 'nothing';
         return true;
     }
 
@@ -276,7 +99,22 @@ Enemy_1.prototype.damage = function() {
 };
 
 Enemy_1.prototype.punch = function () {
-  if(this.facing == 'left') {
+  if(this.holding != 'nothing' && this.holding != 'powerUp_2x') {
+
+    if(this.holding == 'pistol') {
+      if(this.facing == 'left') {
+        this.bullet.fireAngle = Phaser.ANGLE_LEFT;
+      } else {
+        this.bullet.fireAngle = Phaser.ANGLE_RIGHT;
+      }
+      if(game.time.now - this.timeCheck > 1000) {
+            this.bullet.fire();
+            this.timeCheck = game.time.now;
+      }
+    }
+
+  } else {
+  if(this.facing == 'right') {
       this.animations.play('punch_1_left');
       this.punching = true;
       if(this.player.facing == 'left') {
@@ -289,16 +127,24 @@ Enemy_1.prototype.punch = function () {
   } else {
       this.animations.play('punch_1_right');
       this.punching = true;
+      if(this.player.facing == 'right') {
+        this.player.body.x += 3;
+        this.player.body.y -= 3;
+      } else {
+        this.player.body.x -= 3;
+        this.player.body.y -= 3;
+      }
+  }
   }
 };
 
 Enemy_1.prototype.jump = function () {
-  if(checkIfCanJump(this)) {
+  if(this.body.onFloor()) {
     if(this.jumpCount == 0) {
-      this.body.moveUp(300);
+      this.body.velocity.y = 300;
       this.jumpCount = 1;
     } else {
-      this.body.moveUp(380);
+      this.body.velocity.y = 380;
       this.jumpCount = 0;
     }
   }
@@ -306,15 +152,17 @@ Enemy_1.prototype.jump = function () {
 
 
 Enemy_1.prototype.update = function() {
-  game.debug.body(this);
-  this.enemyMoves = false;
+  if(this.alive == true) {
+    this.healthBar.body.x = this.body.x;
+    this.healthBar.body.y = this.body.y;
+  }
   //<Enemy_Punch>
   if(checkOverlap(this, player)) {
     if(playerPunching == true){
-      if(this.body.velocity.x < 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
+      if(this.body.velocity.x < 0) {
         this.body.x += 30;
         this.body.y -= 30;
-      } else if(this.body.velocity.x > 0 && this.body.velocity.y < 150 && this.body.velocity.y > 0) {
+      } else if(this.body.velocity.x > 0) {
         this.body.x -= 30;
         this.body.y -= 30;
       }
@@ -322,63 +170,72 @@ Enemy_1.prototype.update = function() {
     } else {
       playerPunching = false;
     }
-    game.time.events.add(Phaser.Timer.SECOND * 0.5, function(){this.punch();}, this);
+    setTimeout(function(){this.punch();}.bind(this), 500);
+    this.enemyMoves = false;
+    if(this.health > 0) {
+      this.body.velocity.x = 0;
+    }
   } else {
     this.punching = false;
     this.enemyMoves = true;
     this.move();
+    this.immovable = false;
+  }
+
+  if(this.holding == 'pistol') {
+    if(this.facing == 'right' && player.facing == 'left' || this.facing == 'left' && player.facing == 'right') {
+      this.punch();
+    }
   }
   //</Enemy_Punch>
   if(this.punching != false) {
-    if(this.alive == true && this.HP_enemy > 0) {
+    if(this.alive == true && this.health > 0) {
       if(checkOverlap(this, player)) {
-        playerSubtractHealthBar(0.5);
+        playerSubtractHealthBar(this.punch_damage);
       }
     }
-
   }
-  this.HP_enemyBar.setText('HP: ' + this.HP_enemy + '%');
+
+  if(this.holding == 'nothing' && this.counter > 0) {
+    this.counter = 0;
+  }
+
+  this.healthBar.setText('HP: ' + this.health + '%');
 };
 
 Level1.prototype.createEnemy_1 = function(x, y) {
-    var enemy = this.enemies;
+    var enemy = enemies;
 
     if (enemy) {
-        var health = Math.floor((Math.random() * 100) + 5);
-        enemy = new Enemy_1(this.game, player, health);
-        this.enemies.add(enemy);
+        var health = this.game.rnd.integerInRange(5, 100);
+        enemy = new Enemy_1(this.game, player, health, x, y);
+        enemies.add(enemy);
         if(health > 50) {
           enemy.scale.setTo(1.2, 1.2);
         }
     }
 
-    enemy.x = x;
-    enemy.y = y;
-
     return enemy;
 };
 
 Level1.prototype.createEnemy_2 = function(x, y) {
-    var enemy = this.enemies.getFirstDead();
+    var enemy = enemies.getFirstDead();
 
     if (enemy === null) {
-        enemy = new Enemy_1(this.game, player, Math.floor((Math.random() * 20) + 5));
-        this.enemies.add(enemy);
+        enemy = new Enemy_1(this.game, player, this.game.rnd.integerInRange(5, 20), x, y);
+        enemies.add(enemy);
     }
 
     enemy.revive();
-
-    enemy.x = x;
-    enemy.y = y;
 
     return enemy;
 };
 
 Level1.prototype.showerEnemies = function (x, y) {
-  var enemy = this.enemies;
+  var enemy = enemies;
 
   this.game.add.existing(
-    enemy = new Enemy_1(this.game, player, Math.floor((Math.random() * 20) + 5))
+    enemy = new Enemy_1(this.game, player, this.game.rnd.integerInRange(5, 20))
   );
 
   enemy.x = x;
@@ -387,35 +244,222 @@ Level1.prototype.showerEnemies = function (x, y) {
   return enemy;
 };
 
-var Stuff_Block = function (game, player, enemy, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'box_wood');
+var Stuff_Block = function (game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'orb_blue');
 
-  game.physics.p2.enable(this);
+  game.physics.arcade.enable(this);
+  this.body.gravity.y = 2500;
+  setTimeout(function(){this.kill();}.bind(this), 10000);
 };
 
 Stuff_Block.prototype = Object.create(Phaser.Sprite.prototype);
 Stuff_Block.prototype.constructor = Stuff_Block;
 
 Stuff_Block.prototype.update = function () {
-  if(checkOverlap(this, player)) {
-    this.kill();
-  }
+  //console.log(player.counter);
+  game.physics.arcade.overlap(this, player, function(obj1, obj2){
+    if(obj2.counter == 0) {
+      this.kill();
+      obj2.randomNumber = game.rnd.integerInRange(0, 20);
+      if(obj2.randomNumber > 18 && obj2.randomNumber < 20) {
+          new Weapons('powerUp_2x', false, obj2, true);
+          //console.log('Player rnd: ' + obj2.randomNumber + ' You got it!');
+      } else if(obj2.randomNumber > 5 && obj2.randomNumber < 10) {
+          new Weapons('pistol', true, obj2, true);
+      } else {
+        //console.log('Player rnd: ' + obj2.randomNumber + ' Better luck next time!');
+        new Weapons('counter_0', false, obj2, true);
+      }
+      obj2.counter++;
+    }
+  }.bind(this));
+  game.physics.arcade.overlap(this, enemies, function(obj1, obj2){
+    if(obj2.counter == 0) {
+      this.kill();
+      obj2.randomNumber = game.rnd.integerInRange(0, 20);
+      if(obj2.randomNumber > 18 && obj2.randomNumber < 20) {
+          new Weapons('powerUp_2x', false, obj2, false);
+          //console.log('Enemy rnd: ' + obj2.randomNumber + ' You got it!');
+      } else if(obj2.randomNumber > 5 && obj2.randomNumber < 10) {
+          new Weapons('pistol', true, obj2, false);
+      } else {
+        //console.log('Enemy rnd: ' + obj2.randomNumber + ' Better luck next time!');
+        new Weapons('counter_0', false, obj2, false);
+      }
+      obj2.counter++;
+    }
+  }.bind(this));
+  collideWithTilemap(true, this);
 };
 
 Level1.prototype.createStuff_Block = function(x, y) {
-    var block = this.stuff_blocks;
+  var block = stuff_blocks;
+  if(this.MAX_STUFF_BLOCKS == block.countLiving()) {
 
-    if (enemy) {
-        var health = Math.floor((Math.random() * 100) + 5);
-        enemy = new Enemy_1(this.game, player, health);
-        this.enemies.add(enemy);
-        if(health > 50) {
-          enemy.scale.setTo(1.2, 1.2);
-        }
+  } else {
+    if (block) {
+        block = new Stuff_Block(this.game, x, y);
+        stuff_blocks.add(block);
     }
 
-    enemy.x = x;
-    enemy.y = y;
+    return block;
+  }
+};
 
-    return enemy;
+var Weapons = function (weapon_name, gun, target, displayTimer) {
+  var wp = weapons;
+
+  if(weapon_name != '' && gun == true && target.holding == 'nothing') {
+    if(wp) {
+      wp = new guns(weapon_name, 600, game, target);
+      weapons.add(wp);
+      target.holding = weapon_name;
+
+      if(displayTimer == true) {
+        var pu = power_ups;
+
+        if(pu) {
+          pu = new Power_Ups(weapon_name, target, 10);
+          power_ups.add(pu);
+        }
+      }
+    }
+
+    return wp;
+  } else if(weapon_name == 'powerUp_2x' && target.holding != 'powerUp_2x' && gun == false && target.holding == 'nothing') {
+      target.punch_damage = 2;
+      target.holding = 'powerUp_2x';
+      target.tint = 0xCCFFFF;
+      game.add.tween(target.scale).to({ x: 1.3, y: 1.2 }, 500, Phaser.Easing.Back.Out, true, 0);
+      setTimeout(function(){
+        target.punch_damage = 0.5;
+        game.add.tween(target.scale).to({ x: 1, y: 1 }, 500, Phaser.Easing.Back.Out, true, 0);
+        target.tint = 0xFFFFFF;
+        target.holding = 'nothing';
+        target.counter = 0;
+      }.bind(this), 5000);
+      if(displayTimer == true) {
+        var pu = power_ups;
+
+        if(pu) {
+          pu = new Power_Ups('powerUp_2x', target, 5);
+          power_ups.add(pu);
+        }
+      }
+  } else if(weapon_name == 'counter_0' && gun == false) {
+    setTimeout(function(){
+      target.holding = 'nothing';
+      target.counter = 0;
+    }.bind(this), 500);
+  }
+};
+
+Weapons.prototype = Object.create(Phaser.Sprite.prototype);
+Weapons.prototype.constructor = Weapons;
+
+var guns = function (weapon_name, speed, game, target) {
+  this.target = target;
+  this.weapon_name = weapon_name;
+  if(this.weapon_name) {
+  if(this.weapon_name == 'pistol') {
+    this.target.bullet = game.add.weapon(1, 'bullet_1');
+    this.target.bullet.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+    this.target.bullet.bulletAngleOffset = 90;
+    this.target.bullet.bulletSpeed = speed;
+    this.target.bullet.fireRate = 60;
+    Phaser.Sprite.call(this, game, 0, 0, 'pistol');
+  }
+  game.physics.arcade.enable(this);
+  this.alive = true;
+  this.anchor.setTo(0.5, 0.5);
+  this.events.onOutOfBounds.add(function(){this.destroy();}, this);   
+  this.checkWorldBounds = true;
+  if(this.target == player) {
+    this.target.bullet.trackSprite(this.target, 0, this.body.y-20);
+  } else {
+    this.target.bullet.trackSprite(this.target, 0, this.body.y-80);
+  }
+  setTimeout(function(){
+    this.target.holding = 'nothing';
+    this.target.counter = 0;
+    this.destroy();
+    this.alive = false;
+  }.bind(this), 11000);
+  }
+};
+
+guns.prototype = Object.create(Phaser.Sprite.prototype);
+guns.prototype.constructor = guns;
+
+guns.prototype.update = function () {
+  if(this.target.alive == true) {
+  if(this.alive == true) {
+  //collideWithTilemap(true, this);
+  if(this.weapon_name) {
+  if(this.weapon_name == 'pistol') {
+    if(this.target) {
+    if(this.target == player) {
+      game.physics.arcade.collide(this.target.bullet.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.damage(true, 8);}.bind(this)); 
+    } else {
+      game.physics.arcade.collide(this.target.bullet.bullets, player, function(player, bullet){bullet.kill(); playerSubtractHealthBar(8);}.bind(this)); 
+    }
+
+  if(this.target.facing == 'left') {
+    this.scale.x = -1;
+    this.body.x = this.target.body.x-10;
+    this.body.y = this.target.body.y+30;
+  } else {
+    this.scale.x = 1;
+    if(this.target == player) {
+      this.body.x = this.target.body.x+20;
+    } else {
+      this.body.x = this.target.body.x+50;
+    }
+    this.body.y = this.target.body.y+30;
+  }
+
+}
+        }
+      }
+    }
+  } else {
+    this.body.gravity.y = this.GRAVITY;
+  }
+};
+
+var Power_Ups = function (power_up_name, target, timer) {
+  if(power_up_name == 'powerUp_2x') {
+    Phaser.Sprite.call(this, game, 0, 0, 'powerUp_2x');
+    game.physics.arcade.enable(this);
+    this.body.gravity.y = 1000;
+    this.body.collideWorldBounds = true;
+    this.fixedToCamera = true;
+    this.timer = timer;
+    this.timerText = game.add.text(this.body.x+16, this.body.y+38, timer, { font: '10px Arial', fill: '#fff' });
+    this.timerText.fixedToCamera = true;
+    setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
+  } else if(power_up_name == 'pistol') {
+    Phaser.Sprite.call(this, game, 0, 0, 'pistol_box');
+    game.physics.arcade.enable(this);
+    this.body.gravity.y = 1000;
+    this.body.collideWorldBounds = true;
+    this.fixedToCamera = true;
+    this.timer = timer;
+    this.timerText = game.add.text(this.body.x+16, this.body.y+38, timer, { font: '10px Arial', fill: '#fff' });
+    this.timerText.fixedToCamera = true;
+    setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
+  }
+};
+
+Power_Ups.prototype = Object.create(Phaser.Sprite.prototype);
+Power_Ups.prototype.constructor = Power_Ups;
+
+Power_Ups.prototype.update = function () {
+  if(this.timer != -1) {
+  this.timerText.setText(this.timer);
+  game.physics.arcade.collide(this, this);
+  } else {
+  this.kill();
+  this.timerText.kill();
+  }
 };

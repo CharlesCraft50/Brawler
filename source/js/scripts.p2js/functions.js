@@ -7,7 +7,33 @@ function checkOverlap(spriteA, spriteB) {
 
 }
 
+function checkIfCanJump(who) {
 
+    var result = false;
+
+    for (var i=0; i < game.physics.p2.world.narrowphase.contactEquations.length; i++)
+    {
+        var c = game.physics.p2.world.narrowphase.contactEquations[i];
+
+        if (c.bodyA === who.body.data || c.bodyB === who.body.data)
+        {
+            var d = p2.vec2.dot(c.normalA, yAxis);
+
+            if (c.bodyA === who.body.data)
+            {
+                d *= -1;
+            }
+
+            if (d > 0.5)
+            {
+                result = true;
+            }
+        }
+    }
+
+    return result;
+
+}
 
 function getPowDistance(fromX, fromY, toX, toY){
 	var a = Math.abs(fromX - toX);
@@ -74,59 +100,12 @@ function gameOver() {
   healthBar_Red.cameraOffset.x = -225;
   player.kill();
   startGame();
-  player.alive = false;
 }
 
-collideWithTilemap = function(all, obj, layer) {
-  if(all == true) {
-    game.physics.arcade.collide(obj, world);
-    game.physics.arcade.collide(obj, world_tiles_1);
-    game.physics.arcade.collide(obj, world_tiles_2);
-    game.physics.arcade.collide(obj, world_tiles_3);
-  } else {
-    game.physics.arcade.collide(obj, layer);
-  }
-};
-
-moveToObjectAdvance = function (displayObject, destination, speed, maxTime, x, y) {
-
-    if (speed === undefined) { speed = 60; }
-    if (maxTime === undefined) { maxTime = 0; }
-
-    var angle = Math.atan2(destination.y - displayObject.y, destination.x - displayObject.x);
-
-    if (maxTime > 0)
-    {
-        //  We know how many pixels we need to move, but how fast?
-        speed = this.distanceBetween(displayObject, destination) / (maxTime / 1000);
-    }
-
-    if(x == false) {
-      displayObject.body.velocity.y = Math.sin(angle) * speed;
-    } else if(y == false) {
-      displayObject.body.velocity.x = Math.cos(angle) * speed;
-    } else {
-      displayObject.body.velocity.y = Math.sin(angle) * speed;
-      displayObject.body.velocity.x = Math.cos(angle) * speed;
-    }
-
-    return angle;
-
-};
-
-var tilemap = function() {
-  world = game.add.tilemap('world');
-
-    world.addTilesetImage('tileset');
-    world.setCollision(1);
-    world.setCollision(9);
-    world.setTileIndexCallback(9, function(w, s){player.body.y -= 10;}, this);
-
-    world_tiles_1 = world.createLayer('tiles_1');
-    world_tiles_2 = world.createLayer('tiles_2');
-    world_tiles_3 = world.createLayer('tiles_3');
-    
-    world_tiles_1.resizeWorld();
-    world_tiles_2.resizeWorld();
-    world_tiles_3.resizeWorld();
-};
+function accelerateToObject(obj1, obj2, speed) {
+    if (typeof speed === 'undefined') { speed = 60; }
+    var angle = Math.atan2(obj2.y - obj1.y + 90, obj2.x - obj1.x);
+    obj1.body.rotation = angle + game.math.degToRad(90);  // correct angle of angry bullets (depends on the sprite used)
+    obj1.body.force.x = Math.cos(angle) * speed;    // accelerateToObject
+    obj1.body.force.y = Math.sin(angle) * speed - 350;
+}

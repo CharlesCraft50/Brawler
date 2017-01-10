@@ -1,0 +1,44 @@
+{"frames": {
+
+"power_ups_border.png":
+{
+	"frame": {"x":53,"y":1,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"power_ups_border.psd":
+{
+	"frame": {"x":53,"y":1,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"powerUp_2x.png":
+{
+	"frame": {"x":1,"y":1,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+"powerUp_2x.psd":
+{
+	"frame": {"x":1,"y":1,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "power.png",
+	"format": "RGBA8888",
+	"size": {"w":104,"h":52},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:c24a771a646ec0beaac8dfea1e0770de:8286f6738bad184cd43cfe58074c75ad:2ba96ed0813974f2d148f1a6a1685809$"
+}
+}
