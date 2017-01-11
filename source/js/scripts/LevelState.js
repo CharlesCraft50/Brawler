@@ -14,6 +14,11 @@ var punchOnce = false;
 var punchedCount = 0;
 var counter = 0;
 var playerPunching = false;
+var goto_left = false;
+var goto_right = false;
+var run = false;
+var jump = false;
+var punch = false;
 
 var Level1 = function(game) {
   this.MAX_ENEMIES = 3;
@@ -33,7 +38,6 @@ var Level1 = function(game) {
     Level1.prototype.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-
     tilemap();
 
     HUDisplay();
@@ -44,7 +48,7 @@ var Level1 = function(game) {
     spawnPoint.forEach(function(sp){
       game.physics.arcade.enable(sp),
       sp.body.immovable = true,
-      blueOrb = game.add.emitter(sp.body.x, sp.body.y, 200),
+      blueOrb = game.add.emitter(sp.body.x+90, sp.body.y, 200),
 
       blueOrb.makeParticles('orb_blue'),
 
@@ -98,8 +102,9 @@ var Level1 = function(game) {
     cursors = game.input.keyboard.createCursorKeys();
     jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     sprintButton = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
-    punchButton = game.input.keyboard.addKey(Phaser.Keyboard.ALT);
+    punchButton = game.input.keyboard.addKey(Phaser.Keyboard.OPEN_BRACKET);
 
+    buttonsExecute();
     };
 
     Level1.prototype.update = function() {
@@ -137,7 +142,7 @@ var Level1 = function(game) {
           player.counter = 0;
         }
 
-      if(game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+      if(game.input.keyboard.isDown(Phaser.Keyboard.A) || goto_left) {
         player.body.velocity.x = -200;
 
         if (player.facing != 'left')
@@ -146,7 +151,7 @@ var Level1 = function(game) {
             player.animations.play('walk');
             player.facing = 'left';
         }
-      } else if(game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+      } else if(game.input.keyboard.isDown(Phaser.Keyboard.D) || goto_right) {
         player.body.velocity.x = 200;
 
         if (player.facing != 'right')
@@ -164,57 +169,67 @@ var Level1 = function(game) {
 
             if (player.facing == 'left')
             {
-                if(player.holding == 'pistol') {
+                if(player.holding != 'nothing' && player.holding != 'powerUp_2x') {
                   player.scale.x = 1;
                   player.animations.stop();
                   player.frame = 10;
                 } else {
+                  //Jump animation:
+                  if(this.jumping == true) {
+                  player.frame = 13;
+                  player.scale.x = 1;
+                  //break;
+                  } else {
+                  //Player idle left
                   player.scale.x = 1;
                   player.animations.stop(null, true);
+                  //break;
+                  }
                 }
             }
             else
             {
-                if(player.holding == 'pistol') {
+                if(player.holding != 'nothing' && player.holding != 'powerUp_2x') {
                   player.scale.x = -1;
                   player.animations.stop();
                   player.frame = 10;
                 } else {
+                  //Jump animation:
+                  if(this.jumping == true) {
+                  player.frame = 13;
+                  player.scale.x = -1;
+                  //break;
+                  } else {
+                  //Player idle left
                   player.scale.x = -1;
                   player.animations.stop(null, true);
-                }
+                  //break;
+                  }                }
             }
 
             player.facing = player.facing;
         }
       }
 
-      // If the player is touching the ground, let him have 2 jumps
       if (player.body.onFloor()) {
-          this.jumps = 2;
+          this.jumps = 0;
           this.jumping = false;
       }
 
       // Jump!
-      if (this.jumps > 0 && this.spacebarInputIsActive([5])) {
+      if (jumpButton.isDown && this.jumps < 10) {
           player.body.velocity.y = -1000;
-          enemies.forEachAlive(function(enm){
-            enm.enemyMoves = false;
-            if(enm.health > 0) {
-              enm.body.velocity.x = 0;
-              enm.body.velocity.y = 0;
-            }
-          });
+          player.frame = 13;
+          this.jumps++;          
+          this.jumping = true;
+      } else if(jump && this.jumps < 5) {
+          player.body.velocity.y = -1000;
+          player.frame = 13;
+          this.jumps++; 
           this.jumping = true;
       }
 
-      // Reduce the number of available jumps if the jump input is released
-      if (this.jumping && this.spacebarInputReleased()) {
-          this.jumps--;
-          this.jumping = false;
-      }
-
-      if(sprintButton.isDown) {
+      if(sprintButton.isDown || run) {
         if(game.input.keyboard.isDown(Phaser.Keyboard.A) || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
           if (player.facing == 'left')
           {
@@ -232,16 +247,23 @@ var Level1 = function(game) {
 
       }
 
-      if(punchButton.isDown) {
-        if(player.holding == 'pistol') {
+      if(punchButton.isDown || punch) {
+        if(player.holding != 'nothing' && player.holding != 'powerUp_2x') {
           if(player.facing == 'left') {
             player.bullet.fireAngle = Phaser.ANGLE_LEFT;
           } else {
             player.bullet.fireAngle = Phaser.ANGLE_RIGHT;
           }
-          if(game.time.now - player.timeCheck > 1000) {
-            player.bullet.fire();
-            player.timeCheck = game.time.now;
+          if(player.holding == 'pistol') {
+            if(game.time.now - player.timeCheck >= 100) {
+              player.bullet.fire();
+              player.timeCheck = game.time.now;
+            }
+          } else if(player.holding == 'desert_eagle') {
+            if(game.time.now - player.timeCheck >= 100) {
+              player.bullet.fire();
+              player.timeCheck = game.time.now;
+            }
           }
         } else {
           game.physics.arcade.collide(player, weapons, function(player, weapon){weapon.destroy(); weapon.alive = false;});

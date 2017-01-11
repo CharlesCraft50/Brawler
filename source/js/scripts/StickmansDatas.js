@@ -265,7 +265,13 @@ Stuff_Block.prototype.update = function () {
           new Weapons('powerUp_2x', false, obj2, true);
           //console.log('Player rnd: ' + obj2.randomNumber + ' You got it!');
       } else if(obj2.randomNumber > 5 && obj2.randomNumber < 10) {
-          new Weapons('pistol', true, obj2, true);
+        if(obj2.holding == 'nothing' && obj2.holding != 'desert_eagle') {
+          new Weapons('pistol', true, obj2, true, 400);
+        }
+      } else if(obj2.randomNumber > 11 && obj2.randomNumber < 14) {
+        if(obj2.holding == 'nothing' && obj2.holding != 'pistol') {
+          new Weapons('desert_eagle', true, obj2, true, 400);
+        }
       } else {
         //console.log('Player rnd: ' + obj2.randomNumber + ' Better luck next time!');
         new Weapons('counter_0', false, obj2, true);
@@ -281,7 +287,9 @@ Stuff_Block.prototype.update = function () {
           new Weapons('powerUp_2x', false, obj2, false);
           //console.log('Enemy rnd: ' + obj2.randomNumber + ' You got it!');
       } else if(obj2.randomNumber > 5 && obj2.randomNumber < 10) {
-          new Weapons('pistol', true, obj2, false);
+          new Weapons('pistol', true, obj2, false, 400);
+      } else if(obj2.randomNumber > 11 && obj2.randomNumber < 14) {
+          new Weapons('desert_eagle', true, obj2, false, 400);
       } else {
         //console.log('Enemy rnd: ' + obj2.randomNumber + ' Better luck next time!');
         new Weapons('counter_0', false, obj2, false);
@@ -306,12 +314,12 @@ Level1.prototype.createStuff_Block = function(x, y) {
   }
 };
 
-var Weapons = function (weapon_name, gun, target, displayTimer) {
+var Weapons = function (weapon_name, gun, target, displayTimer, speed) {
   var wp = weapons;
 
   if(weapon_name != '' && gun == true && target.holding == 'nothing') {
     if(wp) {
-      wp = new guns(weapon_name, 600, game, target);
+      wp = new guns(weapon_name, speed, game, target);
       weapons.add(wp);
       target.holding = weapon_name;
 
@@ -358,27 +366,53 @@ Weapons.prototype = Object.create(Phaser.Sprite.prototype);
 Weapons.prototype.constructor = Weapons;
 
 var guns = function (weapon_name, speed, game, target) {
+
   this.target = target;
   this.weapon_name = weapon_name;
   if(this.weapon_name) {
+
   if(this.weapon_name == 'pistol') {
-    this.target.bullet = game.add.weapon(1, 'bullet_1');
+
+    this.target.bullet = game.add.weapon(100, 'bullet_1');
     this.target.bullet.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
     this.target.bullet.bulletAngleOffset = 90;
     this.target.bullet.bulletSpeed = speed;
     this.target.bullet.fireRate = 60;
     Phaser.Sprite.call(this, game, 0, 0, 'pistol');
+
+    //Gun position:
+    game.physics.arcade.enable(this);
+    if(this.target == player) {
+    this.target.bullet.trackSprite(this.target, 0, this.body.y-20);
+    } else {
+    this.target.bullet.trackSprite(this.target, 0, this.body.y-80);
+    }
+    //break;
+
+  } else if(this.weapon_name == 'desert_eagle') {
+    this.target.bullet = game.add.weapon(100, 'bullet_1');
+    this.target.bullet.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+    this.target.bullet.bulletAngleOffset = 90;
+    this.target.bullet.bulletSpeed = speed;
+    this.target.bullet.fireRate = 60;
+    Phaser.Sprite.call(this, game, 0, 0, 'desert_eagle');
+
+    //Gun position:
+    game.physics.arcade.enable(this);
+    if(this.target == player) {
+    this.target.bullet.trackSprite(this.target, 0, this.body.y-20);
+    } else {
+    this.target.bullet.trackSprite(this.target, 0, this.body.y-80);
+    }
+    //break;
+
   }
-  game.physics.arcade.enable(this);
+
   this.alive = true;
   this.anchor.setTo(0.5, 0.5);
   this.events.onOutOfBounds.add(function(){this.destroy();}, this);   
   this.checkWorldBounds = true;
-  if(this.target == player) {
-    this.target.bullet.trackSprite(this.target, 0, this.body.y-20);
-  } else {
-    this.target.bullet.trackSprite(this.target, 0, this.body.y-80);
-  }
+
   setTimeout(function(){
     this.target.holding = 'nothing';
     this.target.counter = 0;
@@ -386,6 +420,7 @@ var guns = function (weapon_name, speed, game, target) {
     this.alive = false;
   }.bind(this), 11000);
   }
+
 };
 
 guns.prototype = Object.create(Phaser.Sprite.prototype);
@@ -396,34 +431,42 @@ guns.prototype.update = function () {
   if(this.alive == true) {
   //collideWithTilemap(true, this);
   if(this.weapon_name) {
+if(this.target) {
   if(this.weapon_name == 'pistol') {
-    if(this.target) {
+      if(this.target == player) {
+        game.physics.arcade.collide(this.target.bullet.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.damage(true, 8);}.bind(this)); 
+      } else {
+        game.physics.arcade.collide(this.target.bullet.bullets, player, function(player, bullet){bullet.kill(); playerSubtractHealthBar(8);}.bind(this)); 
+      }
+  } else if(this.weapon_name == 'desert_eagle') {
     if(this.target == player) {
-      game.physics.arcade.collide(this.target.bullet.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.damage(true, 8);}.bind(this)); 
+        game.physics.arcade.collide(this.target.bullet.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.damage(true, 20);}.bind(this)); 
+      } else {
+        game.physics.arcade.collide(this.target.bullet.bullets, player, function(player, bullet){bullet.kill(); playerSubtractHealthBar(20);}.bind(this)); 
+      }
+  }
+}
+    
+    //Gun scale to left/right:
+    if(this.target.facing == 'left') {
+      this.scale.x = -1;
+      this.body.x = this.target.body.x-10;
+      this.body.y = this.target.body.y+30;
     } else {
-      game.physics.arcade.collide(this.target.bullet.bullets, player, function(player, bullet){bullet.kill(); playerSubtractHealthBar(8);}.bind(this)); 
-    }
-
-  if(this.target.facing == 'left') {
-    this.scale.x = -1;
-    this.body.x = this.target.body.x-10;
-    this.body.y = this.target.body.y+30;
-  } else {
-    this.scale.x = 1;
+      this.scale.x = 1;
     if(this.target == player) {
       this.body.x = this.target.body.x+20;
     } else {
       this.body.x = this.target.body.x+50;
     }
-    this.body.y = this.target.body.y+30;
-  }
+      this.body.y = this.target.body.y+30;
+    }
+    //break;
 
 }
-        }
-      }
     }
   } else {
-    this.body.gravity.y = this.GRAVITY;
+    this.body.gravity.y = 10000;
   }
 };
 
@@ -440,6 +483,16 @@ var Power_Ups = function (power_up_name, target, timer) {
     setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
   } else if(power_up_name == 'pistol') {
     Phaser.Sprite.call(this, game, 0, 0, 'pistol_box');
+    game.physics.arcade.enable(this);
+    this.body.gravity.y = 1000;
+    this.body.collideWorldBounds = true;
+    this.fixedToCamera = true;
+    this.timer = timer;
+    this.timerText = game.add.text(this.body.x+16, this.body.y+38, timer, { font: '10px Arial', fill: '#fff' });
+    this.timerText.fixedToCamera = true;
+    setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
+  } else if(power_up_name == 'desert_eagle') {
+    Phaser.Sprite.call(this, game, 0, 0, 'desert_eagle_box');
     game.physics.arcade.enable(this);
     this.body.gravity.y = 1000;
     this.body.collideWorldBounds = true;

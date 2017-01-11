@@ -23,8 +23,15 @@ var PreloadState = {
 		this.load.spritesheet('power_ups', 'assets/sprites/power_ups/power_ups.png', 50, 50);
 		this.load.image('powerUp_2x', 'assets/sprites/power_ups/powerUp_2x.png');
 		this.load.image('pistol', 'assets/sprites/weapons/guns/pistol.png');
+		this.load.image('desert_eagle', 'assets/sprites/weapons/guns/desert_eagle.png');
 		this.load.image('bullet_1', 'assets/sprites/particles/bullets/bullet_1.png');
 		this.load.image('pistol_box', 'assets/sprites/power_ups/pistol_box.png');
+		this.load.image('desert_eagle_box', 'assets/sprites/power_ups/desert_eagle_box.png');
+		this.load.spritesheet('arrow_button', 'assets/sprites/buttons/arrow_button.png', 96, 96);
+		this.load.spritesheet('button-round-a', 'assets/sprites/buttons/button-round-a.png', 96, 96);
+		this.load.spritesheet('run_button', 'assets/sprites/buttons/run_button.png', 96, 96);
+		this.load.spritesheet('jump_button', 'assets/sprites/buttons/jump_button.png', 96, 96);
+		this.load.spritesheet('punch_button', 'assets/sprites/buttons/punch_button.png', 96, 96);
 	},
 
 	create: function() {
