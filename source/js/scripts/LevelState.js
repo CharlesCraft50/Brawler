@@ -1,5 +1,3 @@
-var game = new Phaser.Game(1100, 550, Phaser.CANVAS);
-
 var sprite;
 
 var player;
@@ -204,14 +202,12 @@ var Level1 = function(game) {
 
 
       if (player.body.onFloor()) {
-          this.jumps = 0;
           this.jumping = false;
       }
 
-      if(cursors.up && this.jumps < 5) {
+      if(cursors.up && player.body.onFloor()) {
           player.body.velocity.y = -1000;
           player.frame = 13;
-          this.jumps++; 
           this.jumping = true;
       }
 

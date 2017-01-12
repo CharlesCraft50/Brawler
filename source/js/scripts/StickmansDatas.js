@@ -1,7 +1,5 @@
 var Enemy_1 = function (game, player, health, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'stickman_2');
-  this.player = player;
-  this.player = player;
   this.alive = true;
   this.health = health;
   this.punchedCount = 0;
@@ -32,7 +30,7 @@ var Enemy_1 = function (game, player, health, x, y) {
   this.healthBar.position.y = this.healthBar.position.y-80;
   game.physics.arcade.enable(this.healthBar);
   game.world.bringToTop(stuff_blocks);
-  game.world.bringToTop(this.player);
+  game.world.bringToTop(player);
   game.world.bringToTop(this);
   game.world.bringToTop(spawnPoint);
 };
@@ -42,7 +40,7 @@ Enemy_1.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy_1.prototype.constructor = Enemy_1;
 
 Enemy_1.prototype.move = function () {
-  if(getPowDistance(this.body.x, this.body.y, this.player.body.x, this.player.body.y) < 10000) {
+  if(getPowDistance(this.body.x, this.body.y, player.body.x, player.body.y) < 10000) {
   if(this.enemyMoves != false) {
     if(this.body.velocity.x < 0) {
       this.scale.x = 1;
@@ -54,9 +52,9 @@ Enemy_1.prototype.move = function () {
       this.facing = 'right';
     }
   }
-} else if(getPowDistance(this.body.x, this.body.y, this.player.body.x, this.player.body.y) < 300000) {
+} else if(getPowDistance(this.body.x, this.body.y, player.body.x, player.body.y) < 300000) {
   if(this.enemyMoves != false) {
-    moveToObjectAdvance(this, this.player, 300, 0, true, false);
+    moveToObjectAdvance(this, player, 300, 0, true, false);
     if(this.body.velocity.x < 0) {
       this.scale.x = 1;
       this.animations.play('walk');
@@ -68,7 +66,7 @@ Enemy_1.prototype.move = function () {
     }
   }
 } else {
-    moveToObjectAdvance(this, this.player, 500, 0, true, false);
+    moveToObjectAdvance(this, player, 500, 0, true, false);
     if(this.body.velocity.x < 0) {
       this.animations.play('sprint');
       this.facing = 'left';
@@ -83,7 +81,7 @@ Enemy_1.prototype.damage = function(edit, num) {
   if(edit == true) {
     this.health -= num;
   } else {
-    this.health -= this.player.punch_damage;
+    this.health -= player.punch_damage;
   }
 
     if (this.health <= 0)
@@ -114,26 +112,28 @@ Enemy_1.prototype.punch = function () {
     }
 
   } else {
+  if(player.alive == true) {
   if(this.facing == 'right') {
       this.animations.play('punch_1_left');
       this.punching = true;
-      if(this.player.facing == 'left') {
-        this.player.body.x += 3;
-        this.player.body.y -= 3;
+      if(player.facing == 'left') {
+        player.body.x += 3;
+        player.body.y -= 3;
       } else {
-        this.player.body.x -= 3;
-        this.player.body.y -= 3;
+        player.body.x -= 3;
+        player.body.y -= 3;
       }
   } else {
       this.animations.play('punch_1_right');
       this.punching = true;
-      if(this.player.facing == 'right') {
-        this.player.body.x += 3;
-        this.player.body.y -= 3;
+      if(player.facing == 'right') {
+        player.body.x += 3;
+        player.body.y -= 3;
       } else {
-        this.player.body.x -= 3;
-        this.player.body.y -= 3;
+        player.body.x -= 3;
+        player.body.y -= 3;
       }
+  }
   }
   }
 };
