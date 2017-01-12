@@ -9,10 +9,15 @@ var HomeState = {
 
 		textStyle = { font: '18px Arial', fill: '#fff' };
 
-	    this.startButton = this.add.button(this.game.world.centerX, this.game.world.centerY, 'startButton', preStartGame, this, 1, 0, 2);
-	    this.startButton.anchor.set(0.5);
-			this.helpButton = this.add.button(this.game.world.centerX, this.game.world.centerY+50, 'helpButton', getHelpBtn, this, 1, 0, 2);
-	    this.helpButton.anchor.set(0.5);
+	    startButton = game.add.button(this.game.world.centerX, this.game.world.centerY, 'startButton', null, this, 1, 0, 2);
+	    startButton.anchor.set(0.5);
+  		startButton.fixedToCamera = true;
+  		enableTouch(startButton, preStartGame);
+
+  		helpButton = game.add.button(this.game.world.centerX, this.game.world.centerY+50, 'helpButton', null, this, 1, 0, 2);
+	    helpButton.anchor.set(0.5);
+  		helpButton.fixedToCamera = true;
+  		enableTouch(helpButton, getHelpBtn);
 	},
 
 	update: function() {
@@ -20,9 +25,9 @@ var HomeState = {
 };
 
 function preStartGame() {
-		this.startButton.destroy();
-		this.helpButton.destroy();
-	  startGame();
+	startButton.destroy();
+	helpButton.destroy();
+	startGame();
 }
 
 function startGame() {
@@ -31,18 +36,13 @@ function startGame() {
 
 
 function getHelpBtn() {
-    bgBlack = game.add.sprite(0, 0, 'black');
     getHelp = game.add.text(10, 10, '', { font: '30px Arial', fill: '#fff' });
     getHelp.fixedToCamera = true;
     getHelp.setText('Move Right = RIGHT ARROW;\nMove Left = LEFT ARROW;\nJump = SPACEBAR;\nDouble Jump = SPACEBAR + SPACEBAR;\nTriple Jump = SPACEBAR + SPACEBAR + SPACEBAR;\nSprint = SHIFT;');
-    backButton = game.add.button(480, game.world.height*0.6, 'backButton', closeHelp, this, 1, 0, 2);
+    backButton = game.add.button(game.world.centerX, game.world.height*0.7, 'backButton', null, this, 1, 0, 2);
     backButton.anchor.set(0.5);
-}
-
-function closeHelp() {
-    bgBlack.destroy();
-    backButton.destroy();
-    getHelp.setText('');
+    backButton.fixedToCamera = true;
+    enableTouch(backButton, function(){game.state.start('HomeState');}.bind(this));
 }
 
 game.state.add('HomeState', HomeState);

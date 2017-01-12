@@ -7,7 +7,13 @@ function checkOverlap(spriteA, spriteB) {
 
 }
 
-
+var enableTouch = function(button, func) {
+    button.fixedToCamera = true;
+    button.events.onInputOver.add(func);
+    button.events.onInputOut.add(func);
+    button.events.onInputDown.add(func);
+    button.events.onInputUp.add(func);
+};
 
 function getPowDistance(fromX, fromY, toX, toY){
 	var a = Math.abs(fromX - toX);
@@ -134,18 +140,12 @@ var tilemap = function() {
 var buttonsExecute = function() {
   run_button = game.add.button(1090, 400, 'run_button', null, this, 0, 1, 0, 1);
   run_button.fixedToCamera = true;
-  run_button.events.onInputOver.add(function(){run=true;});
-  run_button.events.onInputOut.add(function(){run=false;});
-  run_button.events.onInputDown.add(function(){run=true;});
-  run_button.events.onInputUp.add(function(){run=false;});
+  enableTouch(run_button, function(){run=true;});
   run_button.scale.x = -1;
 
   punch_button = game.add.button(1090, 300, 'punch_button', null, this, 0, 1, 0, 1);
   punch_button.fixedToCamera = true;
-  punch_button.events.onInputOver.add(function(){punch=true;});
-  punch_button.events.onInputOut.add(function(){punch=false;});
-  punch_button.events.onInputDown.add(function(){punch=true;});
-  punch_button.events.onInputUp.add(function(){punch=false;});
+  enableTouch(punch_button, function(){punch=true;});
   punch_button.scale.x = -1;
 
   game.vjoy = game.plugins.add(Phaser.Plugin.VJoy);
@@ -155,3 +155,27 @@ var buttonsExecute = function() {
   y:500
   };
 };
+
+function getRatio(type, w, h) {
+        var scaleX = width / w,
+            scaleY = height / h,
+            result = {
+                x: 1,
+                y: 1
+            };
+        switch (type) {
+            case 'all':
+                result.x = scaleX > scaleY ? scaleY : scaleX;
+                result.y = scaleX > scaleY ? scaleY : scaleX;
+                break;
+            case 'fit':
+                result.x = scaleX > scaleY ? scaleX : scaleY;
+                result.y = scaleX > scaleY ? scaleX : scaleY;
+                break;
+            case 'fill':
+                result.x = scaleX;
+                result.y = scaleY;
+                break;
+        }
+        return result;
+}
