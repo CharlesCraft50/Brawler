@@ -7,17 +7,13 @@ var enemies_1;
 var enemiesAlive = 0;
 var score = 0;
 var playerDied = false;
-var jumpTimer = 0;
 var punched = false;
 var world;
 var punchOnce = false;
 var punchedCount = 0;
 var counter = 0;
 var playerPunching = false;
-var goto_left = false;
-var goto_right = false;
 var run = false;
-var jump = false;
 var punch = false;
 
 var Level1 = function(game) {
@@ -98,13 +94,8 @@ var Level1 = function(game) {
     weapons = this.game.add.group();
     power_ups = this.game.add.group();
 
-
-    cursors = game.input.keyboard.createCursorKeys();
-    jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    sprintButton = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
-    punchButton = game.input.keyboard.addKey(Phaser.Keyboard.OPEN_BRACKET);
-
     buttonsExecute();
+    cursors = game.vjoy.cursors;
     };
 
     Level1.prototype.update = function() {
@@ -142,7 +133,7 @@ var Level1 = function(game) {
           player.counter = 0;
         }
 
-      if(game.input.keyboard.isDown(Phaser.Keyboard.A) || goto_left) {
+      if(cursors.left) {
         player.body.velocity.x = -200;
 
         if (player.facing != 'left')
@@ -151,7 +142,7 @@ var Level1 = function(game) {
             player.animations.play('walk');
             player.facing = 'left';
         }
-      } else if(game.input.keyboard.isDown(Phaser.Keyboard.D) || goto_right) {
+      } else if(cursors.right) {
         player.body.velocity.x = 200;
 
         if (player.facing != 'right')
@@ -211,25 +202,20 @@ var Level1 = function(game) {
         }
       }
 
+
       if (player.body.onFloor()) {
           this.jumps = 0;
           this.jumping = false;
       }
 
-      // Jump!
-      if (jumpButton.isDown && this.jumps < 10) {
-          player.body.velocity.y = -1000;
-          player.frame = 13;
-          this.jumps++;          
-          this.jumping = true;
-      } else if(jump && this.jumps < 5) {
+      if(cursors.up && this.jumps < 5) {
           player.body.velocity.y = -1000;
           player.frame = 13;
           this.jumps++; 
           this.jumping = true;
       }
 
-      if(sprintButton.isDown || run) {
+      if(run) {
         if(game.input.keyboard.isDown(Phaser.Keyboard.A) || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
           if (player.facing == 'left')
           {
@@ -247,7 +233,7 @@ var Level1 = function(game) {
 
       }
 
-      if(punchButton.isDown || punch) {
+      if(punch) {
         if(player.holding != 'nothing' && player.holding != 'powerUp_2x') {
           if(player.facing == 'left') {
             player.bullet.fireAngle = Phaser.ANGLE_LEFT;

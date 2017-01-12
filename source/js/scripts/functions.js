@@ -132,21 +132,6 @@ var tilemap = function() {
 };
 
 var buttonsExecute = function() {
-  left_button = game.add.button(10, 400, 'arrow_button', null, this, 0, 1, 0, 1);
-  left_button.fixedToCamera = true;
-  left_button.events.onInputOver.add(function(){goto_left=true;});
-  left_button.events.onInputOut.add(function(){goto_left=false;});
-  left_button.events.onInputDown.add(function(){goto_left=true;});
-  left_button.events.onInputUp.add(function(){goto_left=false;});
-
-  right_button = game.add.button(300, 400, 'arrow_button', null, this, 0, 1, 0, 1);
-  right_button.fixedToCamera = true;
-  right_button.events.onInputOver.add(function(){goto_right=true;});
-  right_button.events.onInputOut.add(function(){goto_right=false;});
-  right_button.events.onInputDown.add(function(){goto_right=true;});
-  right_button.events.onInputUp.add(function(){goto_right=false;});
-  right_button.scale.x = -1;
-
   run_button = game.add.button(1090, 400, 'run_button', null, this, 0, 1, 0, 1);
   run_button.fixedToCamera = true;
   run_button.events.onInputOver.add(function(){run=true;});
@@ -155,14 +140,6 @@ var buttonsExecute = function() {
   run_button.events.onInputUp.add(function(){run=false;});
   run_button.scale.x = -1;
 
-  jump_button = game.add.button(980, 400, 'jump_button', null, this, 0, 1, 0, 1);
-  jump_button.fixedToCamera = true;
-  jump_button.events.onInputOver.add(function(){jump=true;});
-  jump_button.events.onInputOut.add(function(){jump=false;});
-  jump_button.events.onInputDown.add(function(){jump=true;});
-  jump_button.events.onInputUp.add(function(){jump=false;});
-  jump_button.scale.x = -1;
-
   punch_button = game.add.button(1090, 300, 'punch_button', null, this, 0, 1, 0, 1);
   punch_button.fixedToCamera = true;
   punch_button.events.onInputOver.add(function(){punch=true;});
@@ -170,4 +147,11 @@ var buttonsExecute = function() {
   punch_button.events.onInputDown.add(function(){punch=true;});
   punch_button.events.onInputUp.add(function(){punch=false;});
   punch_button.scale.x = -1;
+
+  game.vjoy = game.plugins.add(Phaser.Plugin.VJoy);
+  game.vjoy.inputEnable(0, 0, 700, 550);
+  game.vjoy.speed = {
+  x:500,
+  y:500
+  };
 };

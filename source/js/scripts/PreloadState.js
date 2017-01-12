@@ -32,6 +32,9 @@ var PreloadState = {
 		this.load.spritesheet('run_button', 'assets/sprites/buttons/run_button.png', 96, 96);
 		this.load.spritesheet('jump_button', 'assets/sprites/buttons/jump_button.png', 96, 96);
 		this.load.spritesheet('punch_button', 'assets/sprites/buttons/punch_button.png', 96, 96);
+		this.load.image('vjoy_base', 'assets/sprites/buttons/vjoy_base.png');
+        this.load.image('vjoy_body', 'assets/sprites/buttons/vjoy_body.png');
+        this.load.image('vjoy_cap', 'assets/sprites/buttons/vjoy_cap.png');
 	},
 
 	create: function() {
