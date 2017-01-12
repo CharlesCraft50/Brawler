@@ -39,14 +39,6 @@ function checkOverlap(spriteA, spriteB) {
 
 }
 
-var enableTouch = function(button, func) {
-    button.fixedToCamera = true;
-    button.events.onInputOver.add(func);
-    button.events.onInputOut.add(func);
-    button.events.onInputDown.add(func);
-    button.events.onInputUp.add(func);
-};
-
 function getPowDistance(fromX, fromY, toX, toY){
 	var a = Math.abs(fromX - toX);
 	var b = Math.abs(fromY - toY);
@@ -172,12 +164,19 @@ var tilemap = function() {
 var buttonsExecute = function() {
   run_button = game.add.button(1090, 400, 'run_button', null, this, 0, 1, 0, 1);
   run_button.fixedToCamera = true;
-  enableTouch(run_button, function(){run=true;});
+  run_button.fixedToCamera = true;
+  run_button.events.onInputOver.add(function(){run=true;});
+  run_button.events.onInputOut.add(function(){run=false;});
+  run_button.events.onInputDown.add(function(){run=true;});
+  run_button.events.onInputUp.add(function(){run=false;});
   run_button.scale.x = -1;
 
   punch_button = game.add.button(1090, 300, 'punch_button', null, this, 0, 1, 0, 1);
   punch_button.fixedToCamera = true;
-  enableTouch(punch_button, function(){punch=true;});
+  punch_button.events.onInputOver.add(function(){punch=true;});
+  punch_button.events.onInputOut.add(function(){punch=false;});
+  punch_button.events.onInputDown.add(function(){punch=true;});
+  punch_button.events.onInputUp.add(function(){punch=false;});
   punch_button.scale.x = -1;
 
   game.vjoy = game.plugins.add(Phaser.Plugin.VJoy);

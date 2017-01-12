@@ -12,12 +12,14 @@ var HomeState = {
 	    startButton = game.add.button(this.game.world.centerX, this.game.world.centerY, 'startButton', null, this, 1, 0, 2);
 	    startButton.anchor.set(0.5);
   		startButton.fixedToCamera = true;
-  		enableTouch(startButton, preStartGame);
+  		startButton.events.onInputOver.add(preStartGame);
+ 		startButton.events.onInputDown.add(preStartGame);
 
   		helpButton = game.add.button(this.game.world.centerX, this.game.world.centerY+50, 'helpButton', null, this, 1, 0, 2);
 	    helpButton.anchor.set(0.5);
   		helpButton.fixedToCamera = true;
-  		enableTouch(helpButton, getHelpBtn);
+  		helpButton.events.onInputOver.add(getHelpBtn);
+ 		helpButton.events.onInputDown.add(getHelpBtn);
 	},
 
 	update: function() {
@@ -42,7 +44,8 @@ function getHelpBtn() {
     backButton = game.add.button(game.world.centerX, game.world.height*0.7, 'backButton', null, this, 1, 0, 2);
     backButton.anchor.set(0.5);
     backButton.fixedToCamera = true;
-    enableTouch(backButton, function(){game.state.start('HomeState');}.bind(this));
+    backButton.events.onInputOver.add(function(){game.state.start('HomeState');});
+ 	backButton.events.onInputDown.add(function(){game.state.start('HomeState');});
 }
 
 game.state.add('HomeState', HomeState);
