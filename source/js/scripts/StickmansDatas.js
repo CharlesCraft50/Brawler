@@ -23,6 +23,7 @@ var Enemy_1 = function (game, player, health, x, y) {
 
   this.checkWorldBounds = true;
   this.body.collideWorldBounds = true;
+  this.weaponTime = false;
 
   this.body.fixedRotation = true;
   this.body.damping = 0.5;
@@ -99,13 +100,13 @@ Enemy_1.prototype.damage = function(edit, num) {
 Enemy_1.prototype.punch = function () {
   if(this.holding != 'nothing' && this.holding != 'powerUp_2x') {
 
-    if(this.holding == 'pistol') {
+    if(this.weaponTime != false) {
       if(this.facing == 'left') {
         this.bullet.fireAngle = Phaser.ANGLE_LEFT;
       } else {
         this.bullet.fireAngle = Phaser.ANGLE_RIGHT;
       }
-      if(game.time.now - this.timeCheck > 1000) {
+      if(game.time.now - this.timeCheck > this.weaponTime) {
             this.bullet.fire();
             this.timeCheck = game.time.now;
       }
@@ -314,12 +315,12 @@ Level1.prototype.createStuff_Block = function(x, y) {
   }
 };
 
-var Weapons = function (weapon_name, gun, target, displayTimer, speed) {
+var Weapons = function (weapon_name, weapon, target, displayTimer, speed) {
   var wp = weapons;
 
-  if(weapon_name != '' && gun == true && target.holding == 'nothing') {
+  if(weapon_name != '' && weapon == true && target.holding == 'nothing') {
     if(wp) {
-      wp = new guns(weapon_name, speed, game, target);
+      wp = new createWeapon(weapon_name, speed, game, target);
       weapons.add(wp);
       target.holding = weapon_name;
 
@@ -327,14 +328,14 @@ var Weapons = function (weapon_name, gun, target, displayTimer, speed) {
         var pu = power_ups;
 
         if(pu) {
-          pu = new Power_Ups(weapon_name, target, 10);
+          pu = new Power_Ups('weapon', weapon_name, 10);
           power_ups.add(pu);
         }
       }
     }
 
     return wp;
-  } else if(weapon_name == 'powerUp_2x' && target.holding != 'powerUp_2x' && gun == false && target.holding == 'nothing') {
+  } else if(weapon_name == 'powerUp_2x' && target.holding != 'powerUp_2x' && weapon == false && target.holding == 'nothing') {
       target.punch_damage = 2;
       target.holding = 'powerUp_2x';
       target.tint = 0xCCFFFF;
@@ -354,7 +355,7 @@ var Weapons = function (weapon_name, gun, target, displayTimer, speed) {
           power_ups.add(pu);
         }
       }
-  } else if(weapon_name == 'counter_0' && gun == false) {
+  } else if(weapon_name == 'counter_0' && weapon == false) {
     setTimeout(function(){
       target.holding = 'nothing';
       target.counter = 0;
@@ -365,7 +366,7 @@ var Weapons = function (weapon_name, gun, target, displayTimer, speed) {
 Weapons.prototype = Object.create(Phaser.Sprite.prototype);
 Weapons.prototype.constructor = Weapons;
 
-var guns = function (weapon_name, speed, game, target) {
+var createWeapon = function (weapon_name, speed, game, target) {
 
   this.target = target;
   this.weapon_name = weapon_name;
@@ -378,9 +379,10 @@ var guns = function (weapon_name, speed, game, target) {
     this.target.bullet.bulletAngleOffset = 90;
     this.target.bullet.bulletSpeed = speed;
     this.target.bullet.fireRate = 60;
+    this.target.weaponTime = 500;
     Phaser.Sprite.call(this, game, 0, 0, 'pistol');
 
-    //Gun position:
+    //Weapon position:
     game.physics.arcade.enable(this);
     if(this.target == player) {
     this.target.bullet.trackSprite(this.target, 0, this.body.y-20);
@@ -395,9 +397,10 @@ var guns = function (weapon_name, speed, game, target) {
     this.target.bullet.bulletAngleOffset = 90;
     this.target.bullet.bulletSpeed = speed;
     this.target.bullet.fireRate = 60;
+    this.target.weaponTime = 1000;
     Phaser.Sprite.call(this, game, 0, 0, 'desert_eagle');
 
-    //Gun position:
+    //Weapon position:
     game.physics.arcade.enable(this);
     if(this.target == player) {
     this.target.bullet.trackSprite(this.target, 0, this.body.y-20);
@@ -412,6 +415,7 @@ var guns = function (weapon_name, speed, game, target) {
   this.anchor.setTo(0.5, 0.5);
   this.events.onOutOfBounds.add(function(){this.destroy();}, this);   
   this.checkWorldBounds = true;
+  this.target.holdingWeapon = this;
 
   setTimeout(function(){
     this.target.holding = 'nothing';
@@ -423,10 +427,10 @@ var guns = function (weapon_name, speed, game, target) {
 
 };
 
-guns.prototype = Object.create(Phaser.Sprite.prototype);
-guns.prototype.constructor = guns;
+createWeapon.prototype = Object.create(Phaser.Sprite.prototype);
+createWeapon.prototype.constructor = createWeapon;
 
-guns.prototype.update = function () {
+createWeapon.prototype.update = function () {
   if(this.target.alive == true) {
   if(this.alive == true) {
   //collideWithTilemap(true, this);
@@ -447,7 +451,7 @@ if(this.target) {
   }
 }
     
-    //Gun scale to left/right:
+    //Weapon scale to left/right:
     if(this.target.facing == 'left') {
       this.scale.x = -1;
       this.body.x = this.target.body.x-10;
@@ -472,7 +476,7 @@ if(this.target) {
 
 var Power_Ups = function (power_up_name, target, timer) {
   if(power_up_name == 'powerUp_2x') {
-    Phaser.Sprite.call(this, game, 0, 0, 'powerUp_2x');
+    Phaser.Sprite.call(this, game, 0, 50, 'powerUp_2x');
     game.physics.arcade.enable(this);
     this.body.gravity.y = 1000;
     this.body.collideWorldBounds = true;
@@ -481,8 +485,11 @@ var Power_Ups = function (power_up_name, target, timer) {
     this.timerText = game.add.text(this.body.x+16, this.body.y+38, timer, { font: '10px Arial', fill: '#fff' });
     this.timerText.fixedToCamera = true;
     setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
-  } else if(power_up_name == 'pistol') {
-    Phaser.Sprite.call(this, game, 0, 0, 'pistol_box');
+  } else if(power_up_name == 'weapon') {
+    if(this.timer > 0) {
+      this.timerText.kill();
+    } else {
+    Phaser.Sprite.call(this, game, 0, 50, target + '_box');
     game.physics.arcade.enable(this);
     this.body.gravity.y = 1000;
     this.body.collideWorldBounds = true;
@@ -491,16 +498,7 @@ var Power_Ups = function (power_up_name, target, timer) {
     this.timerText = game.add.text(this.body.x+16, this.body.y+38, timer, { font: '10px Arial', fill: '#fff' });
     this.timerText.fixedToCamera = true;
     setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
-  } else if(power_up_name == 'desert_eagle') {
-    Phaser.Sprite.call(this, game, 0, 0, 'desert_eagle_box');
-    game.physics.arcade.enable(this);
-    this.body.gravity.y = 1000;
-    this.body.collideWorldBounds = true;
-    this.fixedToCamera = true;
-    this.timer = timer;
-    this.timerText = game.add.text(this.body.x+16, this.body.y+38, timer, { font: '10px Arial', fill: '#fff' });
-    this.timerText.fixedToCamera = true;
-    setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
+    }
   }
 };
 

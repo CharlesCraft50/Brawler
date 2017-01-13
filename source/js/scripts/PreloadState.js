@@ -13,7 +13,7 @@ var PreloadState = {
 		this.load.image('healthBar_Border', 'assets/sprites/healthBar_Border.png');
 		this.load.image('storage_1', 'assets/structures/storage_1.png');
 		this.load.physics('structures_physicsData', 'assets/structures/physicsData.json');
-		this.load.tilemap('world', 'assets/tilemaps/world.json', null, Phaser.Tilemap.TILED_JSON);
+		this.load.tilemap('map', 'assets/tilemaps/map.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('tileset', 'assets/tilemaps/tileset.png');
 		this.load.image('orb_blue', 'assets/sprites/particles/orbs/orb_blue.png');
 		this.load.image('spawnPoint', 'assets/sprites/spawn_point.png');

@@ -110,9 +110,9 @@ function gameOver() {
 collideWithTilemap = function(all, obj, layer) {
   if(all == true) {
     game.physics.arcade.collide(obj, world);
-    game.physics.arcade.collide(obj, world_tiles_1);
-    game.physics.arcade.collide(obj, world_tiles_2);
-    game.physics.arcade.collide(obj, world_tiles_3);
+    game.physics.arcade.collide(obj, map_tiles_1);
+    game.physics.arcade.collide(obj, map_tiles_2);
+    game.physics.arcade.collide(obj, map_tiles_3);
   } else {
     game.physics.arcade.collide(obj, layer);
   }
@@ -145,20 +145,26 @@ moveToObjectAdvance = function (displayObject, destination, speed, maxTime, x, y
 };
 
 var tilemap = function() {
-  world = game.add.tilemap('world');
+  map = game.add.tilemap('map');
 
-    world.addTilesetImage('tileset');
-    world.setCollision(1);
-    world.setCollision(9);
-    world.setTileIndexCallback(9, function(w, s){player.body.y -= 10;}, this);
+    map.addTilesetImage('tileset');
+    map.setCollision(1);
+    map.setCollision(9);
+    map.setTileIndexCallback(9, function(w, s){player.body.y -= 10;}, this);
 
-    world_tiles_1 = world.createLayer('tiles_1');
-    world_tiles_2 = world.createLayer('tiles_2');
-    world_tiles_3 = world.createLayer('tiles_3');
+    map_tiles_1 = map.createLayer('tiles_1');
+    map_tiles_2 = map.createLayer('tiles_2');
+    map_tiles_3 = map.createLayer('tiles_3');
     
-    world_tiles_1.resizeWorld();
-    world_tiles_2.resizeWorld();
-    world_tiles_3.resizeWorld();
+    map_tiles_1.resizeWorld();
+    map_tiles_2.resizeWorld();
+    map_tiles_3.resizeWorld();
+
+    map.forEach(function(tile){
+      if (tile.index === 1) {    
+        tile.collideDown = false; 
+      }
+    }, game, 0, 0, map.width, map.height, map_tiles_1);
 };
 
 var buttonsExecute = function() {
@@ -180,7 +186,7 @@ var buttonsExecute = function() {
   punch_button.scale.x = -1;
 
   game.vjoy = game.plugins.add(Phaser.Plugin.VJoy);
-  game.vjoy.inputEnable(0, 0, 700, 550);
+  game.vjoy.inputEnable();
   game.vjoy.speed = {
   x:500,
   y:500

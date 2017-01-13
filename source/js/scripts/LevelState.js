@@ -1,13 +1,8 @@
-var sprite;
-
 var player;
 var enemies_1;
 var enemiesAlive = 0;
-var score = 0;
-var playerDied = false;
 var punched = false;
 var world;
-var punchOnce = false;
 var punchedCount = 0;
 var counter = 0;
 var playerPunching = false;
@@ -37,7 +32,7 @@ var Level1 = function(game) {
     HUDisplay();
     spawnPoint = game.add.group();
 
-    world.createFromObjects('objects', 13, 'spawnPoint', 0, true, false, spawnPoint);
+    map.createFromObjects('objects', 13, 'spawnPoint', 0, true, false, spawnPoint);
 
     spawnPoint.forEach(function(sp){
       game.physics.arcade.enable(sp),
@@ -50,6 +45,7 @@ var Level1 = function(game) {
       blueOrb.setAlpha(0.3, 0.8),
       blueOrb.setScale(0.5, 1),
       blueOrb.gravity = -200,
+      game.physics.arcade.enable(blueOrb),
 
       blueOrb.start(false, 5000, 100);
     });
@@ -86,6 +82,7 @@ var Level1 = function(game) {
     player.alive = true;
     player.anchor.setTo(0.5, 0.5);
     player.timeCheck = game.time.now;
+    player.weaponTime = false;
 
     enemies = this.game.add.group();
     stuff_blocks = this.game.add.group();
@@ -101,6 +98,12 @@ var Level1 = function(game) {
       collideWithTilemap(true, enemies);
       game.physics.arcade.collide(enemies, enemies);
       game.physics.arcade.collide(enemies, enemies);
+      if(checkOverlap(player, spawnPoint)) {
+        player.body.gravity.y = -2000;
+        player.body.velocity.y = -2000;
+      } else {
+        player.body.gravity.y = this.GRAVITY;
+      }
 
       if (enemies.countLiving() == 0) {
         for (var i = 0; i < this.MAX_ENEMIES; i++) {
@@ -202,12 +205,14 @@ var Level1 = function(game) {
 
 
       if (player.body.onFloor()) {
+          this.jumps = 0;
           this.jumping = false;
       }
 
-      if(cursors.up && player.body.onFloor()) {
+      if(cursors.up && this.jumps < 5) {
           player.body.velocity.y = -1000;
           player.frame = 13;
+          this.jumps++; 
           this.jumping = true;
       }
 
@@ -236,13 +241,8 @@ var Level1 = function(game) {
           } else {
             player.bullet.fireAngle = Phaser.ANGLE_RIGHT;
           }
-          if(player.holding == 'pistol') {
-            if(game.time.now - player.timeCheck >= 100) {
-              player.bullet.fire();
-              player.timeCheck = game.time.now;
-            }
-          } else if(player.holding == 'desert_eagle') {
-            if(game.time.now - player.timeCheck >= 100) {
+          if(player.weaponTime != false) {
+            if(game.time.now - player.timeCheck >= player.weaponTime) {
               player.bullet.fire();
               player.timeCheck = game.time.now;
             }
