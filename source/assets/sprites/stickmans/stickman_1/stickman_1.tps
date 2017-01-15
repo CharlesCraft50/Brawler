@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.3.1</string>
         <key>fileName</key>
-        <string>C:/Users/Charles Dylan/Documents/Programming/JavaScript/Brawler/source/assets/stickmans/stickman_1/stickman_1.tps</string>
+        <string>C:/Users/Charles Dylan/Documents/Programming/JavaScript/Brawler/source/assets/sprites/stickmans/stickman_1/stickman_1.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -197,10 +197,8 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">attacks/punch_1/left_1.png</key>
-            <key type="filename">attacks/punch_1/left_2.png</key>
-            <key type="filename">attacks/punch_1/right_1.png</key>
-            <key type="filename">attacks/punch_1/right_2.png</key>
+            <key type="filename">attacks/punch_1/punch_1.png</key>
+            <key type="filename">attacks/punch_1/punch_2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -213,8 +211,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">attacks/punch_1/left_3.png</key>
-            <key type="filename">attacks/punch_1/right_3.png</key>
+            <key type="filename">attacks/punch_1/punch_3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -227,8 +224,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">attacks/punch_1/left_4.png</key>
-            <key type="filename">attacks/punch_1/right_4.png</key>
+            <key type="filename">attacks/punch_1/punch_4.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -241,8 +237,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_1.png</key>
-            <key type="filename">moves/walk/right_1.png</key>
+            <key type="filename">moves/walk/crouch_1.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>17,22,34,45</rect>
+                <key>scale9Paddings</key>
+                <rect>17,22,34,45</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">moves/walk/walk_1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -255,8 +263,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_2.png</key>
-            <key type="filename">moves/walk/right_2.png</key>
+            <key type="filename">moves/walk/walk_2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -269,8 +276,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_3.png</key>
-            <key type="filename">moves/walk/right_3.png</key>
+            <key type="filename">moves/walk/walk_3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -283,8 +289,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_4.png</key>
-            <key type="filename">moves/walk/right_4.png</key>
+            <key type="filename">moves/walk/walk_4.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -297,8 +302,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_5.png</key>
-            <key type="filename">moves/walk/right_5.png</key>
+            <key type="filename">moves/walk/walk_5.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -311,8 +315,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_6.png</key>
-            <key type="filename">moves/walk/right_6.png</key>
+            <key type="filename">moves/walk/walk_6.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -325,8 +328,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_7.png</key>
-            <key type="filename">moves/walk/right_7.png</key>
+            <key type="filename">moves/walk/walk_7.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -339,8 +341,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_8.png</key>
-            <key type="filename">moves/walk/right_8.png</key>
+            <key type="filename">moves/walk/walk_8.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -353,8 +354,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">moves/walk/left_9.png</key>
-            <key type="filename">moves/walk/right_9.png</key>
+            <key type="filename">moves/walk/walk_9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

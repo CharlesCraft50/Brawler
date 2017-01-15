@@ -21,7 +21,34 @@ var Level1 = function(game) {
     };
 
     Level1.prototype.preload = function() {
-
+        this.load.atlasJSONHash('stickman_2', 'assets/sprites/stickmans/stickman_2/stickman_2_lit.png', 'assets/sprites/stickmans/stickman_2/stickman_2.json');
+		this.load.atlasJSONHash('stickman_1', 'assets/sprites/stickmans/stickman_3/stickman_3_lit.png', 'assets/sprites/stickmans/stickman_3/stickman_3.json');
+        this.load.spritesheet('startButton', 'assets/buttons/startButton.png', 120, 40);
+		this.load.spritesheet('helpButton', 'assets/buttons/helpButton.png', 120, 40);
+		this.load.spritesheet('backButton', 'assets/buttons/backButton.png', 120, 40);
+		this.load.image('healthBar_Red', 'assets/sprites/healthBar_Red.png');
+		this.load.image('healthBar_Border', 'assets/sprites/healthBar_Border.png');
+		this.load.tilemap('map', 'assets/tilemaps/map.json', null, Phaser.Tilemap.TILED_JSON);
+		this.load.image('tileset', 'assets/tilemaps/tileset.png');
+		this.load.image('orb_blue', 'assets/sprites/particles/orbs/orb_blue.png');
+		this.load.image('spawnPoint', 'assets/sprites/spawn_point.png');
+		this.load.image('box_wood', 'assets/sprites/box_wood.png');
+		this.load.atlasJSONHash('weapons', 'assets/sprites/weapons/weapons.png', 'assets/sprites/weapons/weapons.json');
+		this.load.spritesheet('power_ups', 'assets/sprites/power_ups/power_ups.png', 50, 50);
+		this.load.image('powerUp_2x', 'assets/sprites/power_ups/powerUp_2x.png');
+		this.load.image('pistol', 'assets/sprites/weapons/guns/pistol.png');
+		this.load.image('desert_eagle', 'assets/sprites/weapons/guns/desert_eagle.png');
+		this.load.image('bullet_1', 'assets/sprites/particles/bullets/bullet_1.png');
+		this.load.image('pistol_box', 'assets/sprites/power_ups/pistol_box.png');
+		this.load.image('desert_eagle_box', 'assets/sprites/power_ups/desert_eagle_box.png');
+		this.load.spritesheet('arrow_button', 'assets/sprites/buttons/arrow_button.png', 96, 96);
+		this.load.spritesheet('button-round-a', 'assets/sprites/buttons/button-round-a.png', 96, 96);
+		this.load.spritesheet('run_button', 'assets/sprites/buttons/run_button.png', 96, 96);
+		this.load.spritesheet('jump_button', 'assets/sprites/buttons/jump_button.png', 96, 96);
+		this.load.spritesheet('punch_button', 'assets/sprites/buttons/punch_button.png', 96, 96);
+		this.load.image('vjoy_base', 'assets/sprites/buttons/vjoy_base.png');
+        this.load.image('vjoy_body', 'assets/sprites/buttons/vjoy_body.png');
+        this.load.image('vjoy_cap', 'assets/sprites/buttons/vjoy_cap.png');
     };
 
     Level1.prototype.create = function() {
@@ -52,17 +79,18 @@ var Level1 = function(game) {
 
 
     spawnPoint.forEach(function(sp){
-    player = game.add.sprite(sp.body.x+30, sp.body.y-100, 'stickman_1', 'walk/left_1');
+    player = game.add.sprite(sp.body.x+30, sp.body.y-100, 'stickman_1', 'walk/walk_1');
     });
     game.physics.enable(player, Phaser.Physics.ARCADE);
     game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON);
-    player.animations.add('walk', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 10, true);
-    player.animations.add('sprint', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 20, true);
+    player.animations.add('walk', Phaser.Animation.generateFrameNames('walk/walk_', 1, 8), 10, true);
+    player.animations.add('sprint', Phaser.Animation.generateFrameNames('walk/walk_', 1, 8), 20, true);
+    player.animations.add('crouch', Phaser.Animation.generateFrameNames('walk/crouch'), 20, true);
 
-    player.animations.add('punch_1', Phaser.Animation.generateFrameNames('punch_1/left_', 1, 1), 5, true);
-    player.animations.add('punch_2', Phaser.Animation.generateFrameNames('punch_1/left_', 2, 2), 5, true);
-    player.animations.add('punch_3', Phaser.Animation.generateFrameNames('punch_1/left_', 3, 3), 5, true);
-    player.animations.add('punch_4', Phaser.Animation.generateFrameNames('punch_1/left_', 4, 4), 5, true);
+    player.animations.add('punch_1', Phaser.Animation.generateFrameNames('punch_1/punch_', 1, 1), 5, true);
+    player.animations.add('punch_2', Phaser.Animation.generateFrameNames('punch_1/punch_', 2, 2), 5, true);
+    player.animations.add('punch_3', Phaser.Animation.generateFrameNames('punch_1/punch_', 3, 3), 5, true);
+    player.animations.add('punch_4', Phaser.Animation.generateFrameNames('punch_1/punch_', 4, 4), 5, true);
 
     player.body.gravity.y = this.GRAVITY;
     player.body.collideWorldBounds = true;
@@ -105,14 +133,14 @@ var Level1 = function(game) {
         player.body.gravity.y = this.GRAVITY;
       }
 
-      if (enemies.countLiving() == 0) {
-        for (var i = 0; i < this.MAX_ENEMIES; i++) {
+      if(enemies.countLiving() == 0) {
+        for(var i = 0; i < this.MAX_ENEMIES; i++) {
           this.createEnemy_1(game.rnd.integerInRange(0, 1100), 700);
         }
       }
 
-        if (stuff_blocks.countLiving() == 0) {
-          for (var i = 0; i < this.MAX_STUFF_BLOCKS; i++) {
+        if(stuff_blocks.countLiving() == 0) {
+          for(var i = 0; i < this.MAX_STUFF_BLOCKS; i++) {
             this.createStuff_Block(game.rnd.integerInRange(10, 1100), 500);
           }
         }
@@ -137,8 +165,7 @@ var Level1 = function(game) {
       if(cursors.left) {
         player.body.velocity.x = -200;
 
-        if (player.facing != 'left')
-        {
+        if(player.facing != 'left') {
             player.scale.x = 1;
             player.animations.play('walk');
             player.facing = 'left';
@@ -146,8 +173,7 @@ var Level1 = function(game) {
       } else if(cursors.right) {
         player.body.velocity.x = 200;
 
-        if (player.facing != 'right')
-        {
+        if(player.facing != 'right') {
             player.scale.x = -1;
             player.animations.play('walk');
             player.facing = 'right';
@@ -155,12 +181,10 @@ var Level1 = function(game) {
       } else {
         player.body.velocity.x = 0;
 
-        if (player.facing != 'idle')
-        {
+        if(player.facing != 'idle') {
             player.animations.stop();
 
-            if (player.facing == 'left')
-            {
+            if(player.facing == 'left') {
                 if(player.holding != 'nothing' && player.holding != 'powerUp_2x') {
                   player.scale.x = 1;
                   player.animations.stop();
@@ -178,9 +202,7 @@ var Level1 = function(game) {
                   //break;
                   }
                 }
-            }
-            else
-            {
+            } else {
                 if(player.holding != 'nothing' && player.holding != 'powerUp_2x') {
                   player.scale.x = -1;
                   player.animations.stop();
@@ -204,28 +226,34 @@ var Level1 = function(game) {
       }
 
 
-      if (player.body.onFloor()) {
+      if(player.body.onFloor()) {
           this.jumps = 0;
           this.jumping = false;
       }
 
       if(cursors.up && this.jumps < 5) {
           player.body.velocity.y = -1000;
-          player.frame = 13;
           this.jumps++; 
           this.jumping = true;
       }
 
+      if(cursors.down) {
+          if(player.facing == 'left') {
+            player.scale.x = 1;
+          } else {
+            player.scale.x = -1;
+          }
+            player.frame = 4;
+            player.body.velocity.x = 0;
+      }
+
       if(run) {
-        if(game.input.keyboard.isDown(Phaser.Keyboard.A) || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
-          if (player.facing == 'left')
-          {
+        if(cursors.right || cursors.left) {
+          if (player.facing == 'left') {
               player.scale.x = 1;
               player.body.velocity.x = -500;
               player.animations.play('sprint');
-          }
-          else
-          {
+          } else {
               player.scale.x = -1;
               player.body.velocity.x = 500;
               player.animations.play('sprint');
@@ -288,7 +316,7 @@ var Level1 = function(game) {
     };
 
     Level1.prototype.render = function() {
-
+      //game.debug.body(player);
     };
 
     Level1.prototype.spacebarInputIsActive = function(duration) {

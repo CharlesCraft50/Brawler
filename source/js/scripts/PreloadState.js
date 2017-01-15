@@ -4,20 +4,17 @@ var PreloadState = {
 		this.preloadBar.anchor.setTo(0.5);
 		this.load.setPreloadSprite(this.preloadBar);
 
-		this.load.atlasJSONHash('stickman_2', 'assets/sprites/stickmans/stickman_2/stickman_2.png', 'assets/sprites/stickmans/stickman_2/stickman_2.json');
+		this.load.atlasJSONHash('stickman_2', 'assets/sprites/stickmans/stickman_2/stickman_2_lit.png', 'assets/sprites/stickmans/stickman_2/stickman_2.json');
 		this.load.atlasJSONHash('stickman_1', 'assets/sprites/stickmans/stickman_3/stickman_3_lit.png', 'assets/sprites/stickmans/stickman_3/stickman_3.json');
-    this.load.spritesheet('startButton', 'assets/buttons/startButton.png', 120, 40);
+        this.load.spritesheet('startButton', 'assets/buttons/startButton.png', 120, 40);
 		this.load.spritesheet('helpButton', 'assets/buttons/helpButton.png', 120, 40);
 		this.load.spritesheet('backButton', 'assets/buttons/backButton.png', 120, 40);
 		this.load.image('healthBar_Red', 'assets/sprites/healthBar_Red.png');
 		this.load.image('healthBar_Border', 'assets/sprites/healthBar_Border.png');
-		this.load.image('storage_1', 'assets/structures/storage_1.png');
-		this.load.physics('structures_physicsData', 'assets/structures/physicsData.json');
 		this.load.tilemap('map', 'assets/tilemaps/map.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('tileset', 'assets/tilemaps/tileset.png');
 		this.load.image('orb_blue', 'assets/sprites/particles/orbs/orb_blue.png');
 		this.load.image('spawnPoint', 'assets/sprites/spawn_point.png');
-		this.load.physics('sprites_physicsData', 'assets/sprites/physicsData.json');
 		this.load.image('box_wood', 'assets/sprites/box_wood.png');
 		this.load.atlasJSONHash('weapons', 'assets/sprites/weapons/weapons.png', 'assets/sprites/weapons/weapons.json');
 		this.load.spritesheet('power_ups', 'assets/sprites/power_ups/power_ups.png', 50, 50);

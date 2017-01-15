@@ -14,12 +14,10 @@ var Enemy_1 = function (game, player, health, x, y) {
   this.jumpCount = 0;
   game.physics.arcade.enable(this);
   this.body.gravity.y = 2600;
-  this.animations.add('walk', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 10, true);
-  this.animations.add('sprint', Phaser.Animation.generateFrameNames('walk/left_', 1, 8), 20, true);
+  this.animations.add('walk', Phaser.Animation.generateFrameNames('walk/walk_', 1, 8), 10, true);
+  this.animations.add('sprint', Phaser.Animation.generateFrameNames('walk/walk_', 1, 8), 20, true);
 
-  this.animations.add('punch_1_left', Phaser.Animation.generateFrameNames('punch_1/left_', 1, 4), 20, true);
-
-  this.animations.add('punch_1_right', Phaser.Animation.generateFrameNames('punch_1/right_', 1, 4), 20, true);
+  this.animations.add('punch', Phaser.Animation.generateFrameNames('punch_1/punch_', 1, 4), 20, true);
 
   this.checkWorldBounds = true;
   this.body.collideWorldBounds = true;
@@ -115,7 +113,8 @@ Enemy_1.prototype.punch = function () {
   } else {
   if(player.alive == true) {
   if(this.facing == 'right') {
-      this.animations.play('punch_1_left');
+      this.scale.x = 1;
+      this.animations.play('punch');
       this.punching = true;
       if(player.facing == 'left') {
         player.body.x += 3;
@@ -125,7 +124,8 @@ Enemy_1.prototype.punch = function () {
         player.body.y -= 3;
       }
   } else {
-      this.animations.play('punch_1_right');
+      this.scale.x = -1;
+      this.animations.play('punch');
       this.punching = true;
       if(player.facing == 'right') {
         player.body.x += 3;

@@ -145,7 +145,7 @@ moveToObjectAdvance = function (displayObject, destination, speed, maxTime, x, y
 };
 
 var tilemap = function() {
-  map = game.add.tilemap('map');
+    map = game.add.tilemap('map');
 
     map.addTilesetImage('tileset');
     map.setCollision(1);
@@ -168,7 +168,7 @@ var tilemap = function() {
 };
 
 var buttonsExecute = function() {
-  run_button = game.add.button(1090, 400, 'run_button', null, this, 0, 1, 0, 1);
+  run_button = game.add.button(990, 500, 'run_button', null, this, 0, 1, 0, 1);
   run_button.fixedToCamera = true;
   run_button.fixedToCamera = true;
   run_button.events.onInputOver.add(function(){run=true;});
@@ -177,7 +177,7 @@ var buttonsExecute = function() {
   run_button.events.onInputUp.add(function(){run=false;});
   run_button.scale.x = -1;
 
-  punch_button = game.add.button(1090, 300, 'punch_button', null, this, 0, 1, 0, 1);
+  punch_button = game.add.button(990, 400, 'punch_button', null, this, 0, 1, 0, 1);
   punch_button.fixedToCamera = true;
   punch_button.events.onInputOver.add(function(){punch=true;});
   punch_button.events.onInputOut.add(function(){punch=false;});
