@@ -5,7 +5,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "",
       "projectGuid": "c3215bea-ede8-451e-ba5d-d070a4c6f967",
-      "lastModifiedDate": 1484494518913,
+      "lastModifiedDate": 1487083628539,
       "creationDate": 1484416774188
     },
     "testDirectory": "test",
@@ -44,7 +44,7 @@
           "Orientation": "landscape"
         },
         "isActive_": true,
-        "certificateId_": "",
+        "certificateId_": "CZzZFKoiwkCo0nLSZPJUrQ2",
         "appName_": "Brawler",
         "appID_": "not.yet.specified",
         "appAccess_": {
@@ -57,8 +57,23 @@
           "properties": {}
         },
         "addlPermissions_": "",
-        "icons_": [],
-        "splashes_": [],
+        "icons_": [
+          {
+            "density": "xhdpi",
+            "relPath": "package-assets/launch_icon.png",
+            "width": 96,
+            "height": 96
+          }
+        ],
+        "splashes_": [
+          {
+            "relPath": "package-assets/splash_screen.png",
+            "density": "ldpi",
+            "height": 426,
+            "width": 320,
+            "orientation": "portrait"
+          }
+        ],
         "appVersion_": "0.0.1",
         "appVersionCode_": "1",
         "signed_": true,
@@ -143,7 +158,13 @@
         "certificateId_": "",
         "appName_": "Brawler",
         "appID_": "not.yet.specified",
-        "icons_": [],
+        "icons_": [
+          {
+            "relPath": "package-assets/icon.png",
+            "width": 128,
+            "height": 128
+          }
+        ],
         "splashes_": [],
         "appVersion_": "0.0.1"
       },

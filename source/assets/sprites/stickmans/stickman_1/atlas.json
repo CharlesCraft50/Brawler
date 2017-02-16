@@ -1,0 +1,55 @@
+{
+	"frames": {
+		"head_part": {
+			"frame": {
+				"h": 245,
+				"w": 237,
+				"x": 56,
+				"y": 2
+			},
+			"rotated": "false",
+			"sourceSize": {
+				"h": 245,
+				"w": 237
+			},
+			"spriteSourceSize": {
+				"h": 245,
+				"w": 237,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": "true"
+		},
+		"line_part": {
+			"frame": {
+				"h": 377,
+				"w": 50,
+				"x": 2,
+				"y": 2
+			},
+			"rotated": "false",
+			"sourceSize": {
+				"h": 377,
+				"w": 50
+			},
+			"spriteSourceSize": {
+				"h": 377,
+				"w": 50,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": "true"
+		}
+	},
+	"meta": {
+		"app": "Spriter",
+		"format": "RGBA8888",
+		"image": "atlas_1",
+		"scale": 1,
+		"size": {
+			"h": 381,
+			"w": 295
+		},
+		"version": "r9"
+	}
+}
