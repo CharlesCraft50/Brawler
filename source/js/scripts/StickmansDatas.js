@@ -4,6 +4,8 @@ var Stuff_Block = function (game, x, y) {
   game.physics.arcade.enable(this);
   this.body.gravity.y = 2500;
   setTimeout(function(){this.kill();}.bind(this), 10000);
+
+  massCameraCull('sprite', this);
 };
 
 Stuff_Block.prototype = Object.create(Phaser.Sprite.prototype);
@@ -332,7 +334,7 @@ createWeapon.prototype.update = function () {
       if(this.weapon_name) {
         if(this.target.alive == true) {
   
-  if(this.target.weaponAmmo == -1) {
+  if(this.target.weaponAmmo == 0) {
     this.target.holding = 'nothing';
     this.target.counter = 0;
     this.destroy();
@@ -444,23 +446,20 @@ var Power_Ups = function (type, target, mainTarget, timer) {
     this.body.collideWorldBounds = true;
     this.fixedToCamera = true;
     this.timer = timer;
-    this.timerText = game.add.text(this.body.x+16, this.body.y+38, timer, { font: '10px Arial', fill: '#fff' });
+    this.timerText = game.add.bitmapText(this.body.x+16, this.body.y+38, 'BatmanForeverAlternate', timer, 10);
     this.timerText.fixedToCamera = true;
     setInterval(function(){if(this.timer != -1){this.timer--;}}.bind(this), 1000);
   } else if(this.target.weaponType == 'ammo') {
-    if(this.target.weaponAmmo > 0) {
-      this.timerText = game.add.text(this.body.x+16, this.body.y+38, this.target.weaponAmmo, { font: '10px Arial', fill: '#fff' });
-      this.timerText.kill();
-    } else {
+   
     Phaser.Sprite.call(this, game, 0, 50, this.mainTarget + '_box');
     game.physics.arcade.enable(this);
     this.body.gravity.y = 1000;
     this.body.collideWorldBounds = true;
     this.fixedToCamera = true;
     this.timer = timer;
-    this.timerText = game.add.text(this.body.x+16, this.body.y+38, this.target.weaponAmmo, { font: '10px Arial', fill: '#fff' });
+    this.timerText = game.add.bitmapText(this.body.x+16, this.body.y+38, 'BatmanForeverAlternate', this.target.weaponAmmo, 10);
     this.timerText.fixedToCamera = true;
-    }
+    
   }
 };
 
@@ -476,7 +475,7 @@ Power_Ups.prototype.update = function () {
       this.timerText.kill();
     }
   } else if(this.target.weaponType == 'ammo') {
-    if(this.target.weaponAmmo != -1) {
+    if(this.target.weaponAmmo != 0) {
       this.timerText.setText(this.target.weaponAmmo);
     } else {
       this.kill();
@@ -509,10 +508,10 @@ var Enemy_1 = function (game, player, health, x, y) {
   this.counter = 0;
   this.randomNumber = 0;
   this.anchor.setTo(0.5, 1);
-  this.timeCheck = game.time.now;
-  this.timeCheckPunching = game.time.now;
+  this.timeCheck = game.time.time;
+  this.timeCheckPunching = game.time.time;
   this.animCounter = 0;
-  this.timeCheckBreathing = game.time.now;
+  this.timeCheckBreathing = game.time.time;
   this.fallCounter = 0;
   this.fallDoneCounter = 0;
   this.soundCounter = 0;
@@ -526,7 +525,7 @@ var Enemy_1 = function (game, player, health, x, y) {
   this.checkWorldBounds = true;
   this.body.collideWorldBounds = true;
   this.weaponTime = false;
-  this.spawnPointTime = game.time.now;
+  this.spawnPointTime = game.time.time;
   this.weapon = false;
   this.upsidedown = false;
   this.weapon.name = '';
@@ -536,9 +535,10 @@ var Enemy_1 = function (game, player, health, x, y) {
 
   this.body.fixedRotation = true;
   this.body.damping = 0.5;
-  this.healthBar = game.add.text(0, 0, 'HP: ' + this.health + '%', {font: "10px Arial", fill: "#ffffff"});
+  this.healthBar = game.add.bitmapText(0, 0, 'BatmanForeverAlternate', 'HP: ' + this.health + '%', 10);
   this.healthBar.position.y = this.healthBar.position.y-80;
   game.physics.arcade.enable(this.healthBar);
+  massCameraCull('sprite', this);
 
 
 };
@@ -666,9 +666,9 @@ Enemy_1.prototype.punch = function () {
       } else {
         this.bullet.fireAngle = Phaser.ANGLE_RIGHT;
       }
-      if(game.time.now - this.timeCheck > this.weaponTime) {
+      if(game.time.time - this.timeCheck > this.weaponTime) {
             this.bullet.fire();
-            if(this.weaponAmmo != -1){
+            if(this.weaponAmmo != 0){
               this.weaponAmmo--;
             }
             if(this.weapon.alive == true) {
@@ -678,7 +678,7 @@ Enemy_1.prototype.punch = function () {
             }
             setTimeout(function(){this.weapon.frame = 0;}.bind(this), 500);
             }
-            this.timeCheck = game.time.now;
+            this.timeCheck = game.time.time;
       }
     }
 
@@ -697,10 +697,10 @@ Enemy_1.prototype.punch = function () {
         this.bodyAnimation.setAnimationSpeedPercent(200);
         this.AnimationUpdate = true;
 
-      if(game.time.now - this.timeCheckPunching >= 1000) {
+      if(game.time.time - this.timeCheckPunching >= 1000) {
         this.bodyAnimation.playAnimationByName('punch');
               
-        this.timeCheckPunching = game.time.now;
+        this.timeCheckPunching = game.time.time;
       }
       this.punching = true;
       if(player.facing == 'left') {
@@ -715,11 +715,11 @@ Enemy_1.prototype.punch = function () {
       this.bodyAnimation.setAnimationSpeedPercent(200);
         this.AnimationUpdate = true;
 
-      if(game.time.now - this.timeCheckPunching >= 1000) {
+      if(game.time.time - this.timeCheckPunching >= 1000) {
         this.bodyAnimation.playAnimationByName('punch');
         this.sound_effects['punch'].play();
               
-        this.timeCheckPunching = game.time.now;
+        this.timeCheckPunching = game.time.time;
       }
       this.punching = true;
       if(player.facing == 'right') {
@@ -802,14 +802,14 @@ if(this.AnimationUpdate == true) {
       } else {
         this.bodyAnimation.updateAnimation();
         this.bodyAnimation.setAnimationSpeedPercent(100);
-        if(game.time.now - this.timeCheckBreathing >= 1000) {
+        if(game.time.time - this.timeCheckBreathing >= 1000) {
           if(this.holding != 'nothing' && this.holding != 'powers') {
             this.bodyAnimation.playAnimationByName('idle_hold');
           } else {
             this.bodyAnimation.playAnimationByName('idle');
           }
           this.breathing = true;
-          this.timeCheckBreathing = game.time.now;
+          this.timeCheckBreathing = game.time.time;
         }
       }
 
@@ -927,7 +927,9 @@ var NPC = function(game, x, y, spriterData, speed, moves, direction) {
 
     this.animCounter = 0;
     this.killCounter = 0;
-    this.timeCheckBreathing = game.time.now;
+    this.timeCheckBreathing = game.time.time;
+    
+    massCameraCull('sprite', this);
 };
 
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
@@ -944,9 +946,9 @@ NPC.prototype.update = function() {
       } else {
         this.bodyAnimation.updateAnimation();
         this.bodyAnimation.setAnimationSpeedPercent(100);
-        if(game.time.now - this.timeCheckBreathing >= 1000) {
+        if(game.time.time - this.timeCheckBreathing >= 1000) {
           this.bodyAnimation.playAnimationByName('idle');
-          this.timeCheckBreathing = game.time.now;
+          this.timeCheckBreathing = game.time.time;
         }
       }
 
@@ -1029,11 +1031,11 @@ var Player = function(game, x, y, spriterData) {
     player.soundCounter = 0;
     player.alive = true;
     player.anchor.setTo(0.5, 0.5);
-    player.timeCheck = game.time.now;
-    player.timeCheckBreathing = game.time.now;
-    player.timeCheckPunching = game.time.now;
-    player.timeCheckPunched = game.time.now;
-    player.timeCheckCrouch = game.time.now;
+    player.timeCheck = game.time.time;
+    player.timeCheckBreathing = game.time.time;
+    player.timeCheckPunching = game.time.time;
+    player.timeCheckPunched = game.time.time;
+    player.timeCheckCrouch = game.time.time;
     player.AnimationUpdate = false;
     player.weaponTime = false;
     player.crouching = false;
@@ -1044,7 +1046,7 @@ var Player = function(game, x, y, spriterData) {
     player.weaponAmmo = 0;
     player.weaponType = 'null';
 
-    player.coins = game.add.text(700, 10, 'Coins: ' + localStorage.getItem('score'), { font: '20px Arial', fill: '#fff' });
+    player.coins = game.add.bitmapText(700, 10, 'BatmanForeverOutline', 'Coins: ' + localStorage.getItem('score'), 20);
     player.coins.fixedToCamera = true;
 
   game.world.bringToTop(weapons);
@@ -1055,15 +1057,21 @@ var Player = function(game, x, y, spriterData) {
 
   streetLightBeam_effect.forEachAlive(function(l){
     streetLightBeam_group.add(new streetLightBeam(this.game, l.x+13, l.y+260));
+    massCameraCull('group', streetLightBeam_group);
   });
 
-  new Weapons('uzi', true, player, true, 400, 100);
+  //new Weapons('uzi', true, player, true, 400, 100);
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
+  if(player.holding == 'nothing' && player.weapon != false) {
+    player.weapon.kill();
+    player.weaponAmmo = 0;
+  }
+
   if(player.coinsCounter == 0) {
           player.coins.setText('Coins: ' + parseInt(localStorage.getItem('coins')));
           player.coinsCounter++;
@@ -1086,14 +1094,14 @@ Player.prototype.update = function() {
       } else {
         player.bodyAnimation.updateAnimation();
         player.bodyAnimation.setAnimationSpeedPercent(100);
-        if(game.time.now - player.timeCheckBreathing >= 1000 && player.doubleTapped == false) {
+        if(game.time.time - player.timeCheckBreathing >= 1000 && player.doubleTapped == false) {
           if(player.holding != 'nothing' && player.holding != 'powers') {
             player.bodyAnimation.playAnimationByName('idle_hold');
           } else {
             player.bodyAnimation.playAnimationByName('idle');
           }
           player.breathing = true;
-          player.timeCheckBreathing = game.time.now;
+          player.timeCheckBreathing = game.time.time;
         }
       }
 
@@ -1238,10 +1246,10 @@ Player.prototype.update = function() {
       if(player.standing_up == false) {
       if(player.crouching == true) {
           player.body.velocity.x = 0;
-          if(game.time.now - player.timeCheckCrouch >= 1000) {
+          if(game.time.time - player.timeCheckCrouch >= 1000) {
           player.bodyAnimation.playAnimationByName('crouch_idle');
           player.AnimationUpdate = true;
-          player.timeCheckCrouch = game.time.now;
+          player.timeCheckCrouch = game.time.time;
         }
       }
       } else {
@@ -1351,9 +1359,9 @@ Player.prototype.update = function() {
             player.bullet.fireAngle = Phaser.ANGLE_RIGHT;
           }
           if(player.weaponTime != false) {
-            if(game.time.now - player.timeCheck >= player.weaponTime) {
+            if(game.time.time - player.timeCheck >= player.weaponTime) {
               player.bullet.fire();
-              if(player.weaponAmmo != -1){
+              if(player.weaponAmmo != 0){
                 player.weaponAmmo--;
               }
               if(player.weapon.alive == true) {
@@ -1364,7 +1372,7 @@ Player.prototype.update = function() {
               
               setTimeout(function(){player.weapon.frame = 0;}, 500);
               }
-              player.timeCheck = game.time.now;
+              player.timeCheck = game.time.time;
             }
           }
         } else {
@@ -1385,17 +1393,17 @@ Player.prototype.update = function() {
             player.AnimationUpdate = true;
             
 
-            if(game.time.now - player.timeCheckPunching >= 1000) {
+            if(game.time.time - player.timeCheckPunching >= 1000) {
               player.bodyAnimation.playAnimationByName('punch');
               player.sound_effects['punch'].play();
               
-              player.timeCheckPunching = game.time.now;
+              player.timeCheckPunching = game.time.time;
             }
 
-            if(game.time.now - player.timeCheckPunched >= 500) {
+            if(game.time.time - player.timeCheckPunched >= 500) {
               playerPunching = true;
               
-              player.timeCheckPunched = game.time.now;
+              player.timeCheckPunched = game.time.time;
             } else {
               playerPunching = false;
             }

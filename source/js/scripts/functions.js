@@ -6,6 +6,26 @@ function gofull() {
   }
 }
 
+function resetSprite(sprite) {
+    sprite.x = game.world.bounds.right;
+}
+
+function massCameraCull(type, obj) {
+    if(type == 'sprite') {
+      obj.autoCull = true;
+      obj.checkWorldBounds = true;
+      obj.events.onOutOfBounds.add(resetSprite, this);
+    } else if(type == 'group') {
+      obj.forEachAlive(function(t){
+        t.autoCull = true,
+        t.checkWorldBounds = true,
+        t.events.onOutOfBounds.add(resetSprite, this);
+      });
+    } else {
+      throw new Error('massCameraCull: Type not exist!');
+    }
+}
+
 function getRatio(type, w, h) {
         var scaleX = width / w,
             scaleY = height / h,
@@ -104,10 +124,6 @@ function restartGame() {
   game.state.start('GameState');
 }
 
-function logOut() {
-  window.location = "?action=logOut";
-}
-
 function gameOver() {
   healthBar_Red.cameraOffset.x = -225;
   player.kill();
@@ -166,6 +182,7 @@ moveToObjectAdvance = function (displayObject, destination, speed, maxTime, x, y
 
 };
 
+/*
 var Torch = function(game, x, y) {
     Phaser.Sprite.call(this, game, x, y, 'transparent');
 
@@ -197,7 +214,7 @@ Torch.prototype.update = function() {
     // Randomly change the width and height of the glow to simulate flickering
     var size = this.game.rnd.realInRange(0.9, 1.0);
     this.glow.scale.setTo(size, size); // x, y scaling
-};
+};*/
 
 var streetLightBeam = function(game, x, y) {
     Phaser.Sprite.call(this, game, x, y, 'transparent');
@@ -223,13 +240,13 @@ streetLightBeam.prototype = Object.create(Phaser.Sprite.prototype);
 streetLightBeam.prototype.constructor = streetLightBeam;
 
 streetLightBeam.prototype.update = function() {
-    // Move the glow of this torch to wherever the torch is
+    /* Move the glow of this torch to wherever the torch is
     this.glow.x = this.x;
     this.glow.y = this.y;
 
     // Randomly change the width and height of the glow to simulate flickering
     var size = this.game.rnd.realInRange(0.9, 1.0);
-    this.glow.scale.setTo(size, size); // x, y scaling
+    this.glow.scale.setTo(size, size); // x, y scaling*/
 };
 
 var tilemap = function() {
@@ -294,40 +311,6 @@ var buttonsExecute = function() {
   //game.sound.mute = true;
   mute_button.events.onInputOver.add(function(){ if(game.sound.mute == false){game.sound.mute=true;mute_button.frame=1;}else{game.sound.mute=false;mute_button.frame=0;} });
   mute_button.events.onInputDown.add(function(){ if(game.sound.mute == false){game.sound.mute=true;mute_button.frame=1;}else{game.sound.mute=false;mute_button.frame=0;} });
-
-  game.input.onTap.add(function(pointer, doubleTap){
-      if(doubleTap && player.jumping == false) {
-        if(player.holding == 'nothing') {
-        if(player.crouching != true) {
-        if(player.facing == 'left') {
-            player.scale.x = -1;
-        } else {
-            player.scale.x = 1;
-        }
-        player.doubleTapped = true;
-        player.bodyAnimation.position.setTo(0, -30);
-        setTimeout(function(){player.crouching = true;}, 800);
-        player.bodyAnimation.setAnimationSpeedPercent(100);
-        player.bodyAnimation.playAnimationByName('crouch_down');   
-        player.AnimationUpdate = true;
-
-        player.body.velocity.x = 0;
-        } else {
-        if(player.facing == 'left') {
-          player.scale.x = -1;
-        } else {
-          player.scale.x = 1;
-        }
-        player.bodyAnimation.position.setTo(0, -30);
-        player.standing_up = true;
-        setTimeout(function(){player.crouching = false; player.doubleTapped = true; player.standing_up = false;}, 500);
-        player.bodyAnimation.setAnimationSpeedPercent(100);
-        player.bodyAnimation.playAnimationByName('stand_up');
-        player.AnimationUpdate = true;
-        }
-        }
-      }
-  }, this);
 
   game.vjoy = game.plugins.add(Phaser.Plugin.VJoy);
   game.vjoy.inputEnable();

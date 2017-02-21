@@ -5,7 +5,8 @@ var HomeState = {
 
 	create: function() {
 		
-		background = game.add.image(0, 0, 'background');
+		background = game.add.image(100, 0, 'background');
+		background.scale.setTo(0.46, 0.46);
 		this.preloadBar2 = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'preloadBar');
         this.preloadBar2.anchor.setTo(0.5);
         this.load.setPreloadSprite(this.preloadBar2);
@@ -61,7 +62,7 @@ function startGame() {
 
 
 function getHelpBtn() {
-    getHelp = game.add.text(10, 10, '', { font: '30px Arial', fill: '#fff' });
+    getHelp = game.add.bitmapText(10, 10, 'BatmanForeverOutline', '', 30);
     getHelp.fixedToCamera = true;
     getHelp.setText('Move Right = RIGHT ARROW;\nMove Left = LEFT ARROW;\nJump = SPACEBAR;\nDouble Jump = SPACEBAR + SPACEBAR;\nTriple Jump = SPACEBAR + SPACEBAR + SPACEBAR;\nSprint = SHIFT;');
     backButton = game.add.button(game.world.centerX, game.world.height*0.7, 'backButton', null, this, 1, 0, 2);
@@ -73,12 +74,13 @@ function getHelpBtn() {
 
 function shopOpen() {
 	shopArea = game.add.image(0, 0, 'ShopArea');
+	shopArea.scale.setTo(1.22, 1);
 	startButton.visible = false;
 	helpButton.visible = false;
 	background.visible = false;
-	coins = game.add.text(800, 10, 'Coins: ' + coinsValue, { font: '30px Arial', fill: '#fff' });
+	coins = game.add.bitmapText(790, 10, 'BatmanForeverOutline', 'Coins: ' + coinsValue, 30);
 
-	closeButton = game.add.button(940, 20, 'closeButton', null, this, 1, 0, 2);
+	closeButton = game.add.button(990, 20, 'closeButton', null, this, 1, 0, 2);
 	closeButton.anchor.set(0.5);
 	closeButton.scale.setTo(0.2, 0.2);
   	closeButton.fixedToCamera = true;
@@ -87,7 +89,7 @@ function shopOpen() {
 
  	//Upgrades:
 
- 	healthLevelUpgrade_Text = game.add.text(30, 120, 'Health Level: ', { font: '20px Arial', fill: '#fff' });
+ 	healthLevelUpgrade_Text = game.add.bitmapText(30, 120, 'BatmanForeverAlternate', 'Health Level: ', 20);
  	Upgrade_HealthBarLevel_Bar = game.add.sprite(30, 150, 'upgradesBar_Green');
  	game.physics.arcade.enable(Upgrade_HealthBarLevel_Bar);
  	Upgrade_HealthBarLevel_Border = game.add.sprite(30, 150, 'upgradesBar_Border');

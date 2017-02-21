@@ -23,6 +23,7 @@ var Level1 = function(game) {
         game.time.advancedTiming = true;
         game.stage.backgroundColor = '#fff';
         game.time.advancedTiming = true;
+        //game.add.plugin(Phaser.Plugin.Debug);
     };
 
     Level1.prototype.preload = function() {
@@ -44,8 +45,8 @@ var Level1 = function(game) {
 
     spawnPoint.forEach(function(sp){
       game.physics.arcade.enable(sp),
-      sp.body.immovable = true,
-      blueOrb = game.add.emitter(sp.body.x+90, sp.body.y, 200),
+      sp.body.immovable = true;
+     /* blueOrb = game.add.emitter(sp.body.x+90, sp.body.y, 200),
 
       blueOrb.makeParticles('orb_blue'),
 
@@ -55,7 +56,7 @@ var Level1 = function(game) {
       blueOrb.gravity = -200,
       game.physics.arcade.enable(blueOrb),
 
-      blueOrb.start(false, 5000, 100);
+      blueOrb.start(false, 5000, 100);*/
     });
 
     
@@ -140,22 +141,6 @@ var Level1 = function(game) {
       enemies.forEachAlive(function(e){
         game.debug.body(e);
       });*/
-      game.debug.text(game.time.fps, 500, 20, { font: '50px Arial', fill: '#fff' });
-    };
-
-    Level1.prototype.spacebarInputIsActive = function(duration) {
-        var isActive = false;
-
-        isActive = this.input.keyboard.downDuration(Phaser.Keyboard.SPACEBAR, duration);
-
-
-        return isActive;
-    };
-
-    Level1.prototype.spacebarInputReleased = function() {
-        var released = false;
-
-        released = this.input.keyboard.upDuration(Phaser.Keyboard.SPACEBAR);
-
-        return released;
+      /*game.debug.text(game.time.fps, 500, 20, { font: '50px Arial', fill: '#fff' });
+      game.debug.cameraInfo(game.camera, 32, 32);*/
     };

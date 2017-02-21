@@ -60,6 +60,10 @@ var PreloadState = {
         this.load.audio('null_gravity_sound', 'assets/audios/null_gravity_sound.ogg');
         this.load.audio('desert_eagle_sound', 'assets/audios/desert_eagle_sound.ogg');
         this.load.audio('punching_sound', 'assets/audios/punching_sound.ogg');
+
+        //Fonts
+        game.load.bitmapFont('BatmanForeverOutline','assets/fonts/BatmanForever/BatmanForeverOutline_0.png', 'assets/fonts/BatmanForever/BatmanForeverOutline.xml');
+        game.load.bitmapFont('BatmanForeverAlternate','assets/fonts/BatmanForever/BatmanForeverAlternate_0.png', 'assets/fonts/BatmanForever/BatmanForeverAlternate.xml');
 	},
 
 	create: function() {
