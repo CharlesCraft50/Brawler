@@ -1,13 +1,53 @@
 {
 	"frames": {
+		"head_blink_0": {
+			"frame": {
+				"h": 245,
+				"w": 237,
+				"x": 80,
+				"y": 10
+			},
+			"rotated": "false",
+			"sourceSize": {
+				"h": 245,
+				"w": 237
+			},
+			"spriteSourceSize": {
+				"h": 245,
+				"w": 237,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": "true"
+		},
+		"head_blink_1": {
+			"frame": {
+				"h": 245,
+				"w": 237,
+				"x": 337,
+				"y": 10
+			},
+			"rotated": "true",
+			"sourceSize": {
+				"h": 245,
+				"w": 237
+			},
+			"spriteSourceSize": {
+				"h": 245,
+				"w": 237,
+				"x": 0,
+				"y": 0
+			},
+			"trimmed": "true"
+		},
 		"head_part": {
 			"frame": {
 				"h": 245,
 				"w": 237,
-				"x": 56,
-				"y": 2
+				"x": 337,
+				"y": 267
 			},
-			"rotated": "false",
+			"rotated": "true",
 			"sourceSize": {
 				"h": 245,
 				"w": 237
@@ -24,8 +64,8 @@
 			"frame": {
 				"h": 377,
 				"w": 50,
-				"x": 2,
-				"y": 2
+				"x": 10,
+				"y": 10
 			},
 			"rotated": "false",
 			"sourceSize": {
@@ -44,11 +84,11 @@
 	"meta": {
 		"app": "Spriter",
 		"format": "RGBA8888",
-		"image": "atlas_1",
+		"image": "atlas",
 		"scale": 1,
 		"size": {
-			"h": 381,
-			"w": 295
+			"h": 514,
+			"w": 592
 		},
 		"version": "r9"
 	}

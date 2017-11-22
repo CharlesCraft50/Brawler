@@ -133,7 +133,7 @@ var ShopState = {
 	Upgrade_HealthBarLevel_Plus.anchor.set(0.5);
  	Upgrade_HealthBarLevel_Plus.fixedToCamera = true;
   	Upgrade_HealthBarLevel_Plus.events.onInputUp.add(function(){
-	if(JSON.parse(healthBarLevel).level <= 4.324 && localStorage.getItem('coins') != 0) {
+	if(JSON.parse(healthBarLevel).level <= 4.324) {
   		coins.subtract(2); 
 
 		Upgrade_HealthBarLevel_Bar.scale.x += 0.871;

@@ -69,6 +69,8 @@
   };
 
   var createCompass = function createCompass(pointer) {
+    if(vjoyAlive == true) {
+    if(pointer.x <= 400) {
     if (this.pointer || !this.isInTheZone(pointer)) {
       return;
     }
@@ -87,6 +89,8 @@
     this.preUpdate = setDirection.bind(this);
 
     initialPoint = this.input.activePointer.position.clone();
+  }
+  }
   };
 
   var removeCompass = function () {

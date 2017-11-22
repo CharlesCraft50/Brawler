@@ -64,3 +64,55 @@ game.state.add('BootState', BootState);
 game.state.start('BootState');
 //game.state.add('GameState', GameState);
 game.state.add('Level1', Level1);
+
+GameState.prototype.createEnemy_2 = function(x, y) {
+  
+    var enemy = enemies.getFirstDead();
+
+    if (enemy === null) {
+        enemy = new Enemy_1(this.game, player, this.game.rnd.integerInRange(5, 20), x, y);
+        enemies.add(enemy);
+    }
+
+    enemy.revive();
+
+    return enemy;
+};
+
+GameState.prototype.showerEnemies = function (x, y) {
+  
+  var enemy = enemies;
+
+  this.game.add.existing(
+    enemy = new Enemy_1(this.game, player, this.game.rnd.integerInRange(5, 20))
+  );
+
+  enemy.x = x;
+  enemy.y = y;
+
+  return enemy;
+};
+
+  this.MAX_ENEMIES = 1;
+	this.MAX_STUFF_BLOCKS = 3;
+	this.GRAVITY = 2000;
+	this.ENEMIES_COUNTER = 0;
+
+/*game.debug.body(player);
+      enemies.forEachAlive(function(e){
+        game.debug.body(e);
+      });*/
+      /*game.debug.text(game.time.fps, 500, 20, { font: '50px Arial', fill: '#fff' });
+      game.debug.cameraInfo(game.camera, 32, 32);*/
+
+      /* blueOrb = game.add.emitter(sp.body.x+90, sp.body.y, 200),
+
+      blueOrb.makeParticles('orb_blue'),
+
+      blueOrb.setRotation(0, 0),
+      blueOrb.setAlpha(0.3, 0.8),
+      blueOrb.setScale(0.5, 1),
+      blueOrb.gravity = -200,
+      game.physics.arcade.enable(blueOrb),
+
+      blueOrb.start(false, 5000, 100);*/

@@ -13,6 +13,7 @@ var PreloadState = {
     	this.load.image('shopButton', 'assets/sprites/buttons/shopButton.png');
 		this.load.image('helpButton', 'assets/sprites/buttons/helpButton.png');
 		this.load.image('backButton', 'assets/sprites/buttons/backButton.png');
+		this.load.image('restartButton', 'assets/sprites/buttons/restartButton.png');
 		this.load.image('healthBar_Red', 'assets/sprites/healthBar_Red.png');
 		this.load.image('healthBar_Border', 'assets/sprites/healthBar_Border.png');
 		this.load.tilemap('map', 'assets/tilemaps/map.json', null, Phaser.Tilemap.TILED_JSON);
@@ -40,6 +41,7 @@ var PreloadState = {
 		this.load.spritesheet('jump_button', 'assets/sprites/buttons/jump_button.png', 96, 96);
 		this.load.spritesheet('punch_button', 'assets/sprites/buttons/punch_button.png', 96, 96);
 		this.load.spritesheet('mute_button', 'assets/sprites/buttons/mute_button.png', 96, 96);
+		this.load.spritesheet('pause_button', 'assets/sprites/buttons/pause_button.png', 96, 96);
 		this.load.image('vjoy_base', 'assets/sprites/buttons/vjoy_base.png');
         this.load.image('vjoy_body', 'assets/sprites/buttons/vjoy_body.png');
         this.load.image('vjoy_cap', 'assets/sprites/buttons/vjoy_cap.png');
@@ -53,6 +55,7 @@ var PreloadState = {
         this.load.image('streetLightBeam', 'assets/sprites/particles/lights/streetLightBeam.png');
         this.load.image('transparent', 'assets/sprites/transparent.png');
         this.load.image('darkBlue', 'assets/sprites/darkBlue.png');
+        this.load.image('borderBottom', 'assets/sprites/borderBottom.png');
 
         //Audios
         this.load.audio('pistol_sound', 'assets/audios/pistol_sound.ogg');

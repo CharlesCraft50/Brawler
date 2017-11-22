@@ -1506,14 +1506,14 @@ Player.prototype.update = function() {
       }      
     }
 
-    /*if(game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+    if(game.input.keyboard.isDown(Phaser.Keyboard.S)) {
       game.physics.arcade.collide(player, enemies, function(p, e){
         e.alive = false;
         e.destroy();
         e.healthBar.destroy();
         e.holding = 'nothing';
       });
-    }*/
+    }
 };
 
 GameState.prototype.createPlayer = function(x, y, spriterData) {
