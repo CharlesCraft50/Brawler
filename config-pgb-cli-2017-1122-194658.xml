@@ -7,7 +7,7 @@
 <content src="index.html"/>
 <preference name="android-build-tool" value="gradle" />
 <access origin="*"/>
-<preference name="phonegap-version" value="cli-6.2.0" />
+<preference name="phonegap-version" value="cli-6.5.0" />
 <preference name="xwalkMultipleApk" value="false" />
 <plugin name="cordova-plugin-crosswalk-webview" spec="1.8.0"/>
 <plugin name="cordova-plugin-whitelist" spec="1.2.2"/>
