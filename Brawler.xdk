@@ -5,7 +5,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "",
       "projectGuid": "c3215bea-ede8-451e-ba5d-d070a4c6f967",
-      "lastModifiedDate": 1488988308692,
+      "lastModifiedDate": 1511354434145,
       "creationDate": 1484416774188
     },
     "testDirectory": "test",
@@ -41,7 +41,8 @@
           "android-installLocation": "auto",
           "android-signed": true,
           "Fullscreen": true,
-          "Orientation": "landscape"
+          "Orientation": "landscape",
+          "AndroidLaunchMode": "singleTop"
         },
         "isActive_": true,
         "certificateId_": "CZzZFKoiwkCo0nLSZPJUrQ2",
@@ -78,7 +79,7 @@
         "appVersionCode_": "1",
         "signed_": true,
         "crosswalkVersion_": "19",
-        "cordovaCLIVersion_": "6.2.0",
+        "cordovaCLIVersion_": "6.5.0",
         "appDescription_": ""
       },
       "iOS": {
@@ -106,7 +107,7 @@
         "splashes_": [],
         "appVersion_": "0.0.1",
         "iosProvs_": [],
-        "cordovaCLIVersion_": "6.2.0"
+        "cordovaCLIVersion_": "6.5.0"
       },
       "Windows8": {
         "platform_": "windows8",
@@ -129,7 +130,7 @@
         "icons_": [],
         "splashes_": [],
         "appVersion_": "0.0.0.1",
-        "cordovaCLIVersion_": "6.2.0"
+        "cordovaCLIVersion_": "6.5.0"
       },
       "WebApp": {
         "platform_": "webapp",
@@ -198,7 +199,7 @@
         "icons_": [],
         "splashes_": [],
         "appVersion_": "0.0.0.1",
-        "cordovaCLIVersion_": "6.2.0"
+        "cordovaCLIVersion_": "6.5.0"
       }
     },
     "serviceMethods": [],
